@@ -1,6 +1,6 @@
 "use client";
 import "../globals.css";
-import React, { useState } from "react";
+import React, { useState,ChangeEvent } from "react";
 
 const GenkoYoshi: React.FC = () => {
   const rows = 20; // 行数
@@ -8,10 +8,14 @@ const GenkoYoshi: React.FC = () => {
   const total = rows * cols;
 
   // 入力されたテキストを状態管理
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
 
   // 入力された文字をマスに割り当て
   const chars = text.split("").slice(0, total);
+
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
 
   return (
     <div className="flex flex-col items-center p-6 m-plus-rounded-1c-regular">
@@ -19,7 +23,7 @@ const GenkoYoshi: React.FC = () => {
       <textarea
         className="border p-2 w-80 h-24 mb-6 m-plus-rounded-1c-regular"
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={handleTextChange}
         placeholder="ここに文字を入力してください"
       />
 

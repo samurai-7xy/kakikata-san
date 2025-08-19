@@ -1,17 +1,18 @@
 import SettingsIcon from "../components/SettingsIcon";
+import Link from "next/link";
 import "./globals.css";
 
 export default function HomePage() {
   return (
     // 全体の背景を明るいグレーに変更 (bg-gray-100)
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-[#FAFAFA]">
       {/* 上部の白いセクション */}
       {/* <header className="relative bg-white p-6 shadow-md"> */}
         {/* 設定アイコン */}
         <div className="absolute top-4 right-4">
-          <button aria-label="設定">
+          <Link href="/setting" aria-label="設定">
             <SettingsIcon className="h-100 w-100 text-gray-400 hover:text-gray-600" />
-          </button>
+          </Link>
         </div>
 
         {/* タイトル */}

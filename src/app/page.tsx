@@ -31,16 +31,18 @@ export default function HomePage() {
 
       {/* 中心のボタンセクション (grid-backgroundクラスを削除) */}
       <main className="flex-grow flex flex-col items-center justify-center p-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
-          <button className="col-span-1 bg-[#4A90E2] text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-            写真をアップロード
-          </button>
-          <button className="col-span-1 bg-[#4A90E2] text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-            文章を打ち込む
+        <div className="grid grid-cols-2 gap-4 w-full max-w-[902px]">
+            <button className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+            写真を<br />
+            アップロード
+            </button>
+          <button className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+            文章を<br />
+            打ち込む
           </button>
         </div>
         <div className="mt-4 w-full max-w-lg">
-          <button className="w-full bg-[#4A90E2] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-sky-600 transition-colors duration-300">
+          <button className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
             使い方のススメ
           </button>
         </div>

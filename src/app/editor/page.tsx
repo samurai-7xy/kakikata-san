@@ -2,6 +2,7 @@
 import "../globals.css";
 import React, { useState } from "react";
 import RubyText from "@/components/RubyText";
+import CloseButton from '@/components/CloseButton';
 
 const GenkoYoshi: React.FC = () => {
   const rows = 20; // 行数
@@ -15,6 +16,10 @@ const GenkoYoshi: React.FC = () => {
   const chars = text.split("").slice(0, total);
 
   return (
+    <div className="relative">
+      <CloseButton href="/" className="z-10" />
+
+      {/* ===== 原稿用紙セクション ===== */}
     <div className="flex flex-col items-center p-6 m-plus-rounded-1c-regular">
       {/* 入力欄 */}
       <textarea
@@ -42,6 +47,7 @@ const GenkoYoshi: React.FC = () => {
             {chars[i] || ""}
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

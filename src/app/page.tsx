@@ -36,14 +36,18 @@ export default function HomePage() {
       {/* 中心のボタンセクション (grid-backgroundクラスを削除) */}
       <main className="flex-grow flex flex-col items-center justify-center p-8">
         <div className="grid grid-cols-2 gap-4 w-full max-w-[902px]">
-            <button className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-          <RubyText segments={[{ text: '写真', ruby: 'しゃしん' }, { text: 'を' }]} />
-                <br />
-                <RubyText segments={[{ text: 'アップロード', ruby: 'あっぷろーど' }]} />
-            </button>
+            <Link
+              href="/upload"
+              className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
+            <div>
+              <RubyText segments={[{ text: '写真', ruby: 'しゃしん' }, { text: 'を' }]} />
+              <br />
+              <RubyText segments={[{ text: 'アップロード', ruby: 'あっぷろーど' }]} />
+            </div> 
+            </Link>
           <Link
            href="/editor"
-           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 text-center">
+           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
             <div>
            <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }]}/>
               <br />

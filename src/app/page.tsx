@@ -29,7 +29,7 @@ export default function HomePage() {
         {/* 説明文 */}
         <p className="mt-4 text-[#2C2C2C] mx-auto leading-relaxed"
         style={{ fontSize: "35px", margin: "100px" }}>
-         <RubyText segments={[{ text: '本', ruby: 'ほん'}, {text: 'アプリ', ruby: 'あぷり'},{text:'はあああああああああああああああああああああああああああああああああああああああああああああああああああああああああ' }]} />
+         <RubyText segments={[{ text: '本', ruby: 'ほん'}, {text: 'アプリ', ruby: 'あぷり'},{text:'はあああああああああああああああああああああああああああああああああああああああああああああああああああああああああ'}]} />
         </p>
       {/*</header>
 
@@ -43,18 +43,22 @@ export default function HomePage() {
             </button>
           <Link
            href="/editor"
-           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 text-center">
+            <div>
            <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }]}/>
               <br />
               <RubyText segments={[{ text: '打', ruby: 'う' },{text:'ち'}, {text:'込', ruby:'こ'},{text:'む'}]} />
+              </div>
           </Link>
         </div>
         <div className="mt-4 w-full max-w-lg">
-          <Link
-          href="/device-select" 
-          className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
-            <RubyText segments={[{ text: '使', ruby: 'つか' }, {text:'い'}, {text:'方', ruby:'かた'},{text:'の'}, {text:'説明', ruby:'せつめい'}]} />
-          </Link>
+         <Link
+            href="/device-select" 
+            className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"> 
+        <div>
+          <RubyText segments={[{ text: '使', ruby: 'つか' }, {text:'い'}, {text:'方', ruby:'かた'},{text:'の'}, {text:'説明', ruby:'せつめい'}]} />
+        </div>
+        </Link>
         </div>
       </main>
 

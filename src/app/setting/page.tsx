@@ -1,61 +1,49 @@
-'use client'; // このページがインタラクティブなコンポーネントであることを示すおまじない
+'use client';
 
 import { useState } from 'react';
-// import Link from 'next/link';
-// import { X } from 'lucide-react';
-import CloseButton from '../../components/CloseButton';
+import CloseButton from '@/components/CloseButton';
 
 export default function SettingsPage() {
-  // どのオプションが選択されているかを保存するための状態
   const [selectedOption, setSelectedOption] = useState('hiragana');
 
-const options = [
-    { id: 'hiragana', label: <span style={{ fontSize: '64px' }}>すべてひらがな</span> },
-    // cspell:disable-next-line
-    { id: 'furigana', label: <span style={{ fontSize: '64px' }}>よみがなをつける</span> },
-    { id: 'none', label: <span style={{ fontSize: '64px' }}>よみがなをつけない</span> },
-];
-
-// 53px の縦間隔を設定
-//const optionSpacing = '53px';
+  const options = [
+    { id: 'hiragana', label: 'すべてひらがな' },
+    { id: 'furigana', label: 'よみがなをつける' },
+    { id: 'none', label: 'よみがなをつけない' },
+  ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-    <div className="relative w-screen h-screen flex flex-col items-center justify-center bg-white">
-      {/* 閉じるボタン */}
-      <CloseButton href="/" className="absolute top-4 right-4"/>
-      
-      {/* タイトル */}
-    <h1
-      className="text-center font-bold text-[#2C2C2C] absolute top-8 left-1/2 -translate-x-1/2"
-      style={{ fontSize: "6rem", lineHeight: "1.1", height: "149px" }}
-    >
-      せってい
-    </h1>
+    // ↓ ✨ 背景を半透明の黒に変更
+    <div className="flex items-center justify-center min-h-screen bg-gray-800 bg-opacity-75">
+      <div className="relative w-full max-w-md p-10 bg-white rounded-lg shadow-lg">
+        
+        <CloseButton />
+        
+        <h1 className="text-center text-4xl font-bold text-gray-800 mb-8">
+          せってい
+        </h1>
 
-      {/* 設定オプション */}
-    <div className="p-8 bg-gray-100 rounded-md">
-      <div className="space-y-8 text-3xl">
-        {options.map((option) => (
-          <label key={option.id} className="flex items-center cursor-pointer text-lg text-gray-700">
-            <input
-            type="radio"
-            name="setting"
-            value={option.id}
-            checked={selectedOption === option.id}
-            onChange={() => setSelectedOption(option.id)}
-            className="hidden"
-            />
-            {/* カスタムラジオボタン */}
-            <span className={`w-20 h-20 inline-block mr-3 border-2 rounded-full transition-all duration-200 ${
-            selectedOption === option.id ? 'border-[#F5A623] bg-[#F5A623]' : 'border-gray-400'
-            }`}></span>
-            {option.label}
-          </label>
-        ))}
+        <div className="p-6 bg-gray-100 rounded-md">
+          <div className="space-y-5">
+            {options.map((option) => (
+              <label key={option.id} className="flex items-center cursor-pointer text-xl text-gray-700">
+                <input
+                  type="radio"
+                  name="setting"
+                  value={option.id}
+                  checked={selectedOption === option.id}
+                  onChange={() => setSelectedOption(option.id)}
+                  className="hidden"
+                />
+                <span className={`w-6 h-6 inline-block mr-4 border-2 rounded-full transition-all duration-200 ${
+                  selectedOption === option.id ? 'border-orange-400 bg-orange-400' : 'border-gray-400'
+                }`}></span>
+                {option.label}
+              </label>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

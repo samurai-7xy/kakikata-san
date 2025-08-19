@@ -43,9 +43,11 @@ export default function HomePage() {
           </button>
         </div>
         <div className="mt-4 w-full max-w-lg">
-          <button className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+          <Link
+          href="/device-select" 
+          className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
             使い方のススメ
-          </button>
+          </Link>
         </div>
       </main>
 

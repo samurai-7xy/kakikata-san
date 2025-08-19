@@ -1,6 +1,9 @@
+'use client';
 import SettingsIcon from "../components/SettingsIcon";
 import Link from "next/link";
 import "./globals.css";
+import RubyText from '@/components/RubyText';
+import React from 'react';
 
 export default function HomePage() {
   return (
@@ -26,7 +29,7 @@ export default function HomePage() {
         {/* 説明文 */}
         <p className="mt-4 text-[#2C2C2C] mx-auto leading-relaxed"
         style={{ fontSize: "35px", margin: "100px" }}>
-          本アプリはあああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+         <RubyText segments={[{ text: '本', ruby: 'ほん'}, {text: 'アプリ', ruby: 'あぷり'},{text:'はあああああああああああああああああああああああああああああああああああああああああああああああああああああああああ' }]} />
         </p>
       {/*</header>
 
@@ -34,19 +37,23 @@ export default function HomePage() {
       <main className="flex-grow flex flex-col items-center justify-center p-8">
         <div className="grid grid-cols-2 gap-4 w-full max-w-[902px]">
             <button className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-            写真を<br />
-            アップロード
+          <RubyText segments={[{ text: '写真', ruby: 'しゃしん' }, { text: 'を' }]} />
+                <br />
+                <RubyText segments={[{ text: 'アップロード', ruby: 'あっぷろーど' }]} />
             </button>
-          <button className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-            文章を<br />
-            打ち込む
-          </button>
+          <Link
+           href="/editor"
+           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+           <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }]}/>
+              <br />
+              <RubyText segments={[{ text: '打', ruby: 'う' },{text:'ち'}, {text:'込', ruby:'こ'},{text:'む'}]} />
+          </Link>
         </div>
         <div className="mt-4 w-full max-w-lg">
           <Link
           href="/device-select" 
-          className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
-            使い方のススメ
+          className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center">
+            <RubyText segments={[{ text: '使', ruby: 'つか' }, {text:'い'}, {text:'方', ruby:'かた'},{text:'の'}, {text:'説明', ruby:'せつめい'}]} />
           </Link>
         </div>
       </main>

@@ -1,6 +1,7 @@
 "use client";
 import "../globals.css";
 import React, { useState } from "react";
+import RubyText from "@/components/RubyText";
 
 const GenkoYoshi: React.FC = () => {
   const rows = 20; // 行数

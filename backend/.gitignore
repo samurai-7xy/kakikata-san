@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pycache/
+*.pytest_cache/
+
+# 仮想環境
+venv/
+.env
+.env.*
+
+# DB
+*.sqlite3
+*.db
+*.sqlite
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# pyinstaller
+dist/
+build/
+*.spec
+
+# Coverage
+htmlcov/
+.coverage
+
+# MyPy
+.mypy_cache/
+
+# pipenv / poetry
+Pipfile.lock
+poetry.lock
+
+# Docker
+*.env.local

@@ -40,3 +40,5 @@ backend/
 
 
 routes + services + models を全部つなげて Mac 上で動かす簡単な起動例
+
+deactivate　仮想環境抜ける

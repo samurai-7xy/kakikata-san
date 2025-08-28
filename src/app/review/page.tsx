@@ -60,6 +60,41 @@ export default function ReviewPage() {
     );
   }
 
+  //Base64 DataURL → Blob 変換関数
+  async function base64ToBlob(dataUrl: string): Promise<Blob> {
+    // DataURLを fetch で扱う
+    const res = await fetch(dataUrl);
+    return await res.blob();
+  }
+
+
+  // 次に進むの処理関数
+  const handleNext = async () => {
+    try {
+      const formData = new FormData();
+
+      for (let i = 0; i < images.length; i++) {
+        const blob = await base64ToBlob(images[i]);
+        formData.append("file", blob, `image_${i}.png`);
+      }
+
+      const res = await fetch("http://localhost:8000/ocr", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      const recognizedText = data.text;
+
+      router.push(`/editor?text=${encodeURIComponent(recognizedText)}`);
+    } catch (err) {
+      console.error("OCR failed:", err);
+    }
+  };
+
+
+
+
   return (
     <>
       {/* 確認モーダルをページに設置 */}
@@ -91,10 +126,10 @@ export default function ReviewPage() {
                           {...provided.dragHandleProps}
                           className="relative w-full group" // groupクラスでホバーを検知
                         >
-                          <img 
-                            src={src} 
-                            alt={`Review ${index + 1}`} 
-                            className="w-full h-auto object-contain rounded-lg shadow-md" 
+                          <img
+                            src={src}
+                            alt={`Review ${index + 1}`}
+                            className="w-full h-auto object-contain rounded-lg shadow-md"
                           />
                           {/* マウスホバーで表示される削除ボタン */}
                           <button
@@ -114,16 +149,19 @@ export default function ReviewPage() {
             )}
           </Droppable>
         </DragDropContext>
-        
+
         {/* 下部固定ボタンエリア */}
         <div className="flex-shrink-0 bg-white p-4 border-t border-gray-200">
           <div className="max-w-md mx-auto flex gap-4">
             <button onClick={handleRetake} className="w-full bg-gray-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-md hover:bg-gray-600">
               <RubyText segments={[{ text: '選び直す', ruby: 'えらびなおす' }]} />
             </button>
-            <Link href="/editor" className="w-full bg-blue-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 flex items-center justify-center text-center">
+            <button
+              onClick={handleNext}
+              className="w-full bg-blue-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 flex items-center justify-center text-center"
+            >
               <RubyText segments={[{ text: '次へ進む', ruby: 'つぎへすすむ' }]} />
-            </Link>
+            </button>
           </div>
         </div>
       </div>

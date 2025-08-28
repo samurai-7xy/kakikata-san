@@ -9,45 +9,41 @@ export default function HomePage() {
   return (
     // 全体の背景を明るいグレーに変更 (bg-gray-100)
     <div className="flex flex-col min-h-screen bg-[#FAFAFA]">
-      {/* 上部の白いセクション */}
-      {/* <header className="relative bg-white p-6 shadow-md"> */}
+      <header className="relative p-6 md:p-8">
         {/* 設定アイコン */}
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-6 right-6 md:top-8 md:right-8 z-20">
           <Link href="/setting" aria-label="設定">
-            <SettingsIcon className="h-100 w-100 text-gray-400 hover:text-gray-600" />
+            <SettingsIcon className="w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 text-gray-400 hover:text-gray-600" />
           </Link>
         </div>
 
         {/* タイトル */}
-        <h1
-          className="text-center font-bold text-[#2C2C2C] mt-12"
-          style={{ fontSize: "6rem", lineHeight: "1.1", height: "149px" }}
-        >
+      <h1 className="text-center font-bold text-[#2C2C2C] mt-8 md:mt-12 text-5xl lg:text-[6rem] leading-tight">
           かきかたさん
         </h1>
 
         {/* 説明文 */}
-        <p className="mt-4 text-[#2C2C2C] mx-auto leading-relaxed"
-        style={{ fontSize: "35px", margin: "100px" }}>
+        <p className="mt-8 md:mt-12 text-[#2C2C2C] max-w-4xl mx-auto leading-relaxed text-center text-lg md:text-2xl lg:text-[35px] px-4">
          <RubyText segments={[{ text: '本', ruby: 'ほん'}, {text: 'アプリ', ruby: 'あぷり'},{text:'はあああああああああああああああああああああああああああああああああああああああああああああああああああああああああ'}]} />
         </p>
-      {/*</header>
+      </header>
 
       {/* 中心のボタンセクション (grid-backgroundクラスを削除) */}
-      <main className="flex-grow flex flex-col items-center justify-center p-8">
-        <div className="grid grid-cols-2 gap-4 w-full max-w-[902px]">
+      <main className="flex-grow flex flex-col items-center justify-center p-4 md:p-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl">
             <Link
               href="/upload"
-              className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
-            <div>
-              <RubyText segments={[{ text: '写真', ruby: 'しゃしん' }, { text: 'を' }]} />
-              <br />
-              <RubyText segments={[{ text: 'アップロード', ruby: 'あっぷろーど' }]} />
-            </div> 
+              className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"
+            >
+              <div>
+                <RubyText segments={[{ text: '写真', ruby: 'しゃしん' }, { text: 'を' }]} />
+                <br />
+                <RubyText segments={[{ text: 'アップロード', ruby: 'あっぷろーど' }]} />
+              </div>
             </Link>
           <Link
            href="/editor"
-           className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
+           className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
             <div>
            <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }]}/>
               <br />
@@ -58,7 +54,7 @@ export default function HomePage() {
         <div className="mt-4 w-full max-w-lg">
          <Link
             href="/device-select" 
-            className="w-full h-[175px] bg-[#4A90E2] text-white font-semibold text-[64px] py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"> 
+            className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"> 
         <div>
           <RubyText segments={[{ text: '使', ruby: 'つか' }, {text:'い'}, {text:'方', ruby:'かた'},{text:'の'}, {text:'説明', ruby:'せつめい'}]} />
         </div>

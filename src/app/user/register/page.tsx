@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CloseButton from "@/components/CloseButton";
 
 export default function RegisterPage() {
     const [username, setUsername] = useState("");
@@ -36,6 +37,7 @@ export default function RegisterPage() {
                 onSubmit={handleSubmit}
                 className="bg-white p-6 rounded-lg shadow-md w-80"
             >
+                <CloseButton />
                 <h1 className="text-xl font-bold mb-4">ユーザ登録</h1>
 
                 <input

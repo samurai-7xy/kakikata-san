@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 // import { Inter } from "next/font/google"; // ← 1. この行をコメントアウト（または削除）
 import "./globals.css";
 import { SettingsProvider } from "@/contexts/SettingsContext";
+import { ImageProvider } from "@/contexts/ImageContext";
 
 // const inter = Inter({ subsets: ["latin"] }); // ← 2. この行もコメントアウト（または削除）
 
@@ -20,8 +21,11 @@ export default function RootLayout({
       {/* ↓ 3. bodyタグから className={inter.className} を削除 */}
       <body>
         <SettingsProvider>
-          {children}
-        </SettingsProvider></body>
+          <ImageProvider>
+            {children}
+          </ImageProvider>
+        </SettingsProvider>
+        </body>
     </html>
   );
 }

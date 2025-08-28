@@ -3,26 +3,24 @@ import React, { useState, useMemo } from "react";
 import CloseButton from '@/components/CloseButton';
 import RubyText from "@/components/RubyText";
 import GenkoSheet from "@/components/GenkoSheet";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingSpinner from "@/components/LoadingSpinner"; // ✨ 作成した部品をインポート
 
 const GenkoYoshiEditor: React.FC = () => {
   const [text, setText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // ✨ ローディング状態を管理
   const charsPerPage = 400;
 
-  // 入力された文字数に応じて、必要な原稿用紙の枚数を計算
   const pageCount = useMemo(() => {
     return Math.max(1, Math.ceil(text.length / charsPerPage));
   }, [text]);
 
-  // 「採点する」ボタンが押されたときの処理（今はコンソールに表示するだけ）
-  const handleScoring = async() => {
-    setIsLoading(true); //ローディング開始
-    console.log("採点するボタンが押されました。");
-    console.log("現在の文章:", text);
-    // ここに将来的にAPIを呼び出すなどの処理を追加します
+  // 「採点する」ボタンが押されたときの処理
+  const handleScoring = async () => {
+    setIsLoading(true); // ✨ ローディング開始
+    console.log("採点処理を開始します...");
 
-     // (今は処理の重さをシミュレートするために3秒待つ)
+    // --- ここに将来的にバックエンドAPIを呼び出す処理が入る ---
+    // (今は処理の重さをシミュレートするために3秒待つ)
     await new Promise(resolve => setTimeout(resolve, 3000)); 
     
     console.log("採点処理が完了しました。");
@@ -37,44 +35,36 @@ const GenkoYoshiEditor: React.FC = () => {
       {/* ✨ ローディング画面をページに設置 */}
       <LoadingSpinner isVisible={isLoading} />
 
-      <div className="flex flex-col items-center min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
+      <div className="flex flex-col items-center min-h-screen bg-[#f9f5e9] p-4 sm:p-8">
         <div className="absolute top-4 right-4 z-30">
           <CloseButton href="/" />
         </div>
 
-        <h1 className="text-3xl font-bold text-[#2C2C2C] mb-6">
+        <h1 className="text-3xl font-bold text-gray-700 mb-6">
           <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />
         </h1>
 
         <div className="relative w-max">
           <div className="flex flex-col gap-8">
-            <div className="relative w-full overflow-x-auto flex flex-row gap-8">
-              {Array.from({ length: pageCount }).map((_, pageIndex) => (
-                <GenkoSheet
-                  key={pageIndex}
-                  text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
-                />
-              ))}
-            </div>
+            {Array.from({ length: pageCount }).map((_, pageIndex) => (
+              <GenkoSheet
+                key={pageIndex}
+                text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
+              />
+            ))}
           </div>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="absolute top-0 left-0 h-full bg-transparent text-transparent caret-[#2C2C2C] resize-none focus:outline-none z-20
-               text-lg sm:text-2xl md:text-3xl
-               leading-[2rem] sm:leading-[2.5rem] md:leading-[3rem]
-               tracking-[0.5rem] sm:tracking-[0.75rem] md:tracking-[1rem]
-               font-sans p-2 sm:p-4"
+            className="absolute inset-0 w-full bg-transparent text-transparent caret-black resize-none focus:outline-none z-20"
             style={{
-              /*height: `${pageCount * (2.5 * 20)}rem`,
+              height: `${pageCount * (2.5 * 20)}rem`,
               writingMode: "vertical-rl",
               fontSize: '2rem',
               lineHeight: '2.5rem',
               letterSpacing: '1rem',
               fontFamily: '"M PLUS Rounded 1c", sans-serif',
-              padding: '0.5rem 1rem'*/
-              width: `${pageCount * 25}rem`, // 横にページ数分広げる
-              writingMode: "vertical-rl",
+              padding: '0.5rem 1rem'
             }}
             placeholder="ここをクリックして入力を開始"
           />

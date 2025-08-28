@@ -1,14 +1,14 @@
-# app/schemas/user.py
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
 # ユーザー作成用
 class UserCreate(BaseModel):
-    name: str = Field(..., max_length=50)
+    username: str
     email: EmailStr
-    password: str = Field(..., min_length=6)
-    age: Optional[int] = None
+    password: str
+    grade: str
+    age: int
 
 
 # ログイン用
@@ -20,10 +20,11 @@ class UserLogin(BaseModel):
 # プロフィール返却用
 class UserProfile(BaseModel):
     id: int
-    name: str
+    username: str
     email: EmailStr
-    age: Optional[int] = None
-    created_at: Optional[str] = None
+    grade: str
+    age: int
 
     class Config:
         orm_mode = True
+        from_attributes = True

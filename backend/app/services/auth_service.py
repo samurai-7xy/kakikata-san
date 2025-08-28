@@ -11,6 +11,14 @@ from app.core.security import create_access_token, create_refresh_token
 from app.models.user import User
 from app.schema.auth import Token, TokenData
 
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.ext.asyncio import AsyncSession
+from jose import JWTError, jwt
+from app.models.user import User
+from app.db.session import async_session
+from app.core.security import decode_access_token
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -69,3 +77,32 @@ class AuthService:
             return new_token
         except JWTError:
             return None
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+    """現在のログインユーザーを取得"""
+    try:
+        payload = decode_access_token(token)
+        user_id: int = int(payload.get("sub"))
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="認証情報が無効です",
+            )
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="認証情報が無効です",
+        )
+
+    async with async_session() as session:
+        result = await session.get(User, user_id)
+        if result is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="ユーザーが見つかりません",
+            )
+        return result

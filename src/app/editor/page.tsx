@@ -2,89 +2,92 @@
 import React, { useState, useMemo } from "react";
 import CloseButton from '@/components/CloseButton';
 import RubyText from "@/components/RubyText";
-
-// 句読点や小さい仮名などを判定するための正規表現
-const punctuationRegex = /^[、。、「」『』（）？！゛゜´¨]/;
-const smallKanaRegex = /^[ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮ]/;
+import GenkoSheet from "@/components/GenkoSheet";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const GenkoYoshiEditor: React.FC = () => {
-  const rows = 20;
-  const cols = 20;
-  const totalCells = rows * cols;
-
   const [text, setText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const charsPerPage = 400;
 
-  // 入力された文字を、句読点などを考慮してマス目に割り当てる
-  // useMemoを使って、textが変更されたときだけ再計算する
-  const characters = useMemo(() => {
-    const chars = text.split('').slice(0, totalCells);
-    return Array.from({ length: totalCells }).map((_, i) => chars[i] || "");
-  }, [text, totalCells]);
+  // 入力された文字数に応じて、必要な原稿用紙の枚数を計算
+  const pageCount = useMemo(() => {
+    return Math.max(1, Math.ceil(text.length / charsPerPage));
+  }, [text]);
 
-  // 文字の種類に応じてCSSクラスを返すヘルパー関数
-  const getCharClass = (char: string) => {
-    if (punctuationRegex.test(char) || smallKanaRegex.test(char)) {
-      return 'punctuation'; // 右上に配置するクラス
-    }
-    return '';
+  // 「採点する」ボタンが押されたときの処理（今はコンソールに表示するだけ）
+  const handleScoring = async() => {
+    setIsLoading(true); //ローディング開始
+    console.log("採点するボタンが押されました。");
+    console.log("現在の文章:", text);
+    // ここに将来的にAPIを呼び出すなどの処理を追加します
+
+     // (今は処理の重さをシミュレートするために3秒待つ)
+    await new Promise(resolve => setTimeout(resolve, 3000)); 
+    
+    console.log("採点処理が完了しました。");
+    setIsLoading(false); // ✨ ローディング終了
+
+    // ここで採点結果ページに移動するなどの処理を追加
+    alert("採点が完了しました！");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
-      <div className="absolute top-4 right-4">
-        <CloseButton href="/" />
-      </div>
+    <>
+      {/* ✨ ローディング画面をページに設置 */}
+      <LoadingSpinner isVisible={isLoading} />
 
-      <h1 className="text-3xl font-bold text-[#2C2C2C] mb-6">
-        <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />
-      </h1>
-
-      {/* 原稿用紙と、その上に重ねる透明なテキストエリアのコンテナ */}
-      <div className="relative w-max shadow-lg">
-        {/* 原稿用紙のグリッド */}
-        <div
-          className="grid bg-white"
-          style={{
-            gridTemplateColumns: `repeat(${cols}, 2.5rem)`,
-            gridTemplateRows: `repeat(${rows}, 2.5rem)`,
-            writingMode: "vertical-rl",
-            border: '2px solid #555',
-          }}
-        >
-          {characters.map((char, i) => (
-            <div
-              key={i}
-              className={`border border-dashed border-red-200 flex items-center justify-center text-2xl relative ${getCharClass(char)}`}
-            >
-              {/* 各列の中央に縦の破線を追加 */}
-              <div className="absolute h-full border-l border-dashed border-red-200 left-1/2"></div>
-              <span className="z-10">{char}</span>
-            </div>
-          ))}
+      <div className="flex flex-col items-center min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
+        <div className="absolute top-4 right-4 z-30">
+          <CloseButton href="/" />
         </div>
 
-        {/* ユーザーが実際に入力する透明なテキストエリア */}
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          maxLength={totalCells}
-          className="absolute inset-0 w-full h-full p-2 bg-transparent text-transparent caret-[#2C2C2C] resize-none focus:outline-none z-20"
-          style={{
-            writingMode: "vertical-rl",
-            fontSize: '2rem',
-            lineHeight: '2.5rem',
-            letterSpacing: '1rem', // 文字間隔を調整
-            fontFamily: '"M PLUS Rounded 1c", sans-serif',
-          }}
-          placeholder="ここをクリックして入力を開始"
-        />
+        <h1 className="text-3xl font-bold text-[#2C2C2C] mb-6">
+          <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />
+        </h1>
+
+        <div className="relative w-max">
+          <div className="flex flex-col gap-8">
+            {Array.from({ length: pageCount }).map((_, pageIndex) => (
+              <GenkoSheet
+                key={pageIndex}
+                text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
+              />
+            ))}
+          </div>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="absolute inset-0 w-full bg-transparent text-transparent caret-black resize-none focus:outline-none z-20"
+            style={{
+              height: `${pageCount * (2.5 * 20)}rem`,
+              writingMode: "vertical-rl",
+              fontSize: '2rem',
+              lineHeight: '2.5rem',
+              letterSpacing: '1rem',
+              fontFamily: '"M PLUS Rounded 1c", sans-serif',
+              padding: '0.5rem 1rem'
+            }}
+            placeholder="ここをクリックして入力を開始"
+          />
+        </div>
+        
+        <div className="mt-4 text-gray-600">
+          {text.length} 文字
+        </div>
+
+        {text.length > 0 && (
+          <button
+            onClick={handleScoring}
+            // ✨ ローディング中はボタンを押せないようにする
+            disabled={isLoading}
+            className="fixed bottom-8 right-8 bg-green-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            <RubyText segments={[{ text: '採点', ruby: 'さいてん' }, { text: 'する' }]} />
+          </button>
+        )}
       </div>
-      
-      {/* 文字数カウンター */}
-      <div className="mt-4 text-gray-600">
-        {text.length} / {totalCells} 文字
-      </div>
-    </div>
+    </>
   );
 };
 

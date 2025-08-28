@@ -48,25 +48,33 @@ const GenkoYoshiEditor: React.FC = () => {
 
         <div className="relative w-max">
           <div className="flex flex-col gap-8">
-            {Array.from({ length: pageCount }).map((_, pageIndex) => (
-              <GenkoSheet
-                key={pageIndex}
-                text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
-              />
-            ))}
+            <div className="relative w-full overflow-x-auto flex flex-row gap-8">
+              {Array.from({ length: pageCount }).map((_, pageIndex) => (
+                <GenkoSheet
+                  key={pageIndex}
+                  text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
+                />
+              ))}
+            </div>
           </div>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="absolute inset-0 w-full bg-transparent text-transparent caret-black resize-none focus:outline-none z-20"
+            className="absolute top-0 left-0 h-full bg-transparent text-transparent caret-[#2C2C2C] resize-none focus:outline-none z-20
+               text-lg sm:text-2xl md:text-3xl
+               leading-[2rem] sm:leading-[2.5rem] md:leading-[3rem]
+               tracking-[0.5rem] sm:tracking-[0.75rem] md:tracking-[1rem]
+               font-sans p-2 sm:p-4"
             style={{
-              height: `${pageCount * (2.5 * 20)}rem`,
+              /*height: `${pageCount * (2.5 * 20)}rem`,
               writingMode: "vertical-rl",
               fontSize: '2rem',
               lineHeight: '2.5rem',
               letterSpacing: '1rem',
               fontFamily: '"M PLUS Rounded 1c", sans-serif',
-              padding: '0.5rem 1rem'
+              padding: '0.5rem 1rem'*/
+              width: `${pageCount * 25}rem`, // 横にページ数分広げる
+              writingMode: "vertical-rl",
             }}
             placeholder="ここをクリックして入力を開始"
           />

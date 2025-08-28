@@ -45,17 +45,88 @@ deactivate　仮想環境抜ける
 
 
 
-kakikata-san/
-|
-|--backend/
-|   ├── app/
-|
-|--src/
-|    |
-|    |-- app/
-|         |
-|         |-- user/
-|         |    |
-|         |    |-- register.txs
-|         |
-          |-- editor/
+.
+└── project/
+    ├── backend/
+    │   ├── main.py
+    │   └── app/
+    │       ├── api/
+    │       │   ├── routes_correction.py
+    │       │   ├── routes_users.py
+    │       │   ├── routes_auth.py
+    │       │   ├── routes_health.py
+    │       │   ├── routes_essay.py
+    │       │   └── routes_ocr.py
+    │       ├── core
+    │       │   ├── config.py
+    │       │   ├── security.py
+    │       │   ├── openai_client.py
+    │       │   └── ocr_client.py
+    │       ├── models/
+    │       │   ├── essay.py
+    │       │   └── user.py
+    │       ├── schema/
+    │       │   ├── auth.py
+    │       │   ├── correction.py
+    │       │   ├── essay.py
+    │       │   ├── user.py
+    │       │   └── ocr.py
+    │       ├── db/
+    │       │   ├── base.py
+    │       │   └── session.py
+    │       ├── services/
+    │       │   ├── auth_service.py
+    │       │   ├── correction_service.py
+    │       │   ├── user_service.py
+    │       │   └── ocr_service.py
+    │       └── utils/
+    │           └── validators.py
+    └── src/
+        └── app/
+            ├── page.tsx
+            └── user/
+                └── register/
+                    └── page.tsx
+
+
+# project/
+## backend/
+### main.py
+### app/
+#### api/
+##### routes_correction.py   
+##### routes_users.py 
+##### routes_auth.py
+##### routes_health.py
+##### routes_essay.py
+##### routes_ocr.py
+#### core
+##### config.py
+##### security.py
+##### openai_client.py
+##### ocr_client.py
+#### models/
+##### essay.py
+##### user.py
+#### schema/
+##### auth.py
+##### correction.py
+##### essay.py
+##### user.py
+##### ocr.py
+#### db/
+##### base.py
+##### session.py
+#### services/
+##### auth_service.py
+##### correction_service.py
+##### user_service.py
+##### ocr_service.py 
+#### utils/
+##### validators.py
+## src/
+### app/
+#### page.tsx
+#### user/
+##### register/
+###### page.tsx

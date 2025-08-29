@@ -4,6 +4,7 @@ import { useRef, ChangeEvent, useContext } from 'react';
 import Link from 'next/link';
 import RubyText from '@/components/RubyText';
 import { ImageContext } from '@/contexts/ImageContext';
+import CloseButton from '@/components/CloseButton';
 
 export default function UploadPage() {
   const context = useContext(ImageContext);
@@ -28,6 +29,7 @@ export default function UploadPage() {
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-white p-4 sm-p-6">
+      <CloseButton />
       <input
         type="file"
         accept="image/*"
@@ -50,7 +52,7 @@ export default function UploadPage() {
             ))}
           </div>
         ) : (
-          <span className="text-gray-500 text-xl">クリックして写真を選択</span>
+          <span className="text-gray-500 text-xl"><RubyText segments={[{ text: 'クリック', ruby: 'くりっく' },{text:'して'},{text:'写真', ruby:'しゃしん'},{text:'を'},{text:'選択', ruby:'せんたく'},]} /></span>
         )}
       </div>
 

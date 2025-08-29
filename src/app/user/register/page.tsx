@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CloseButton from "@/components/CloseButton";
+import RubyText from "@/components/RubyText";
 
 export default function RegisterPage() {
     const [username, setUsername] = useState("");
@@ -38,54 +39,74 @@ export default function RegisterPage() {
                 className="bg-white p-6 rounded-lg shadow-md w-80"
             >
                 <CloseButton />
-                <h1 className="text-xl font-bold mb-4">ユーザ登録</h1>
+                <h1 className="text-xl font-bold mb-4"><RubyText segments={[{text:'ユーザー登録',ruby:'ゆーざーとうろく'}]}/></h1>
 
-                <input
-                    type="text"
-                    placeholder="ユーザー名"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="border p-2 mb-3 w-full rounded"
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="メールアドレス"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="border p-2 mb-3 w-full rounded"
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border p-2 mb-3 w-full rounded"
-                    required
-                />
-                <input
-                    type="number"
-                    placeholder="年齢"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value ? parseInt(e.target.value) : "")}
-                    className="border p-2 mb-3 w-full rounded"
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="学年"
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
-                    className="border p-2 mb-4 w-full rounded"
-                    required
-                />
+                <div className="mb-3">
+                    <label className="block mb-1">
+                        <RubyText segments={[{text:'ユーザー名',ruby:'ゆーざーめい'}]}/>
+                    </label>
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="block mb-1">
+                        <RubyText segments={[{text:'メールアドレス',ruby:'めーるあどれす'}]}/>
+                    </label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="block mb-1">
+                        <RubyText segments={[{text:'パスワード',ruby:'ぱすわーど'}]}/>
+                    </label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="block mb-1">
+                        <RubyText segments={[{text:'年齢',ruby:'ねんれい'}]}/>
+                    </label>
+                    <input
+                        type="number"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value ? parseInt(e.target.value) : "")}
+                        className="border p-2 w-full rounded"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1">
+                        <RubyText segments={[{text:'学年',ruby:'がくねん'}]}/>
+                    </label>
+                    <input
+                        type="text"
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        className="border p-2 w-full rounded"
+                        required
+                    />
+                </div>
 
                 <button
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
                 >
-                    登録
+                    <RubyText segments={[{text:'登録',ruby:'とうろく'}]}/>
                 </button>
 
                 {message && <p className="mt-4 text-center text-sm">{message}</p>}

@@ -1,38 +1,41 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // ← 追加
 import CloseButton from '@/components/CloseButton';
 import RubyText from "@/components/RubyText";
 import GenkoSheet from "@/components/GenkoSheet";
-import LoadingSpinner from "@/components/LoadingSpinner"; // ✨ 作成した部品をインポート
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const GenkoYoshiEditor: React.FC = () => {
+  const searchParams = useSearchParams(); // ← フックで取得
   const [text, setText] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // ✨ ローディング状態を管理
+  const [isLoading, setIsLoading] = useState(false);
   const charsPerPage = 400;
+
+  // URL のクエリから初期テキストを反映
+  useEffect(() => {
+    const paramText = searchParams.get("text") ?? "";
+    if (paramText) setText(decodeURIComponent(paramText));
+  }, [searchParams]); // ← フックを依存配列に
 
   const pageCount = useMemo(() => {
     return Math.max(1, Math.ceil(text.length / charsPerPage));
   }, [text]);
 
-  // 「採点する」ボタンが押されたときの処理
   const handleScoring = async () => {
-    setIsLoading(true); // ✨ ローディング開始
+    setIsLoading(true);
     console.log("採点処理を開始します...");
 
-    // --- ここに将来的にバックエンドAPIを呼び出す処理が入る ---
-    // (今は処理の重さをシミュレートするために3秒待つ)
-    await new Promise(resolve => setTimeout(resolve, 3000)); 
-    
-    console.log("採点処理が完了しました。");
-    setIsLoading(false); // ✨ ローディング終了
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // ここで採点結果ページに移動するなどの処理を追加
+    console.log("採点処理が完了しました。");
+    setIsLoading(false);
+
     alert("採点が完了しました！");
   };
 
   return (
     <>
-      {/* ✨ ローディング画面をページに設置 */}
       <LoadingSpinner isVisible={isLoading} />
 
       <div className="flex flex-col items-center min-h-screen bg-[#f9f5e9] p-4 sm:p-8">
@@ -69,15 +72,14 @@ const GenkoYoshiEditor: React.FC = () => {
             placeholder="ここをクリックして入力を開始"
           />
         </div>
-        
+
         <div className="mt-4 text-gray-600">
-          {text.length} <RubyText segments={[{text:'文字',ruby:'もじ'}]}/>
+          {text.length} <RubyText segments={[{ text: '文字', ruby: 'もじ' }]} />
         </div>
 
         {text.length > 0 && (
           <button
             onClick={handleScoring}
-            // ✨ ローディング中はボタンを押せないようにする
             disabled={isLoading}
             className="fixed bottom-8 right-8 bg-green-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >

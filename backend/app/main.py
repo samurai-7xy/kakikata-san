@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes_users import router as users_router
 from app.api import routes_ocr
+from app.api import routes_correction
 
 app = FastAPI(title="かきかたさん", version="0.1.0")
 
@@ -15,7 +16,11 @@ app.add_middleware(
 )
 
 # ルーター登録
+# ユーザ登録
 app.include_router(users_router)
 
 # 手書き認識のやつのルータ
 app.include_router(routes_ocr.router)
+
+# API登録
+app.include_router(routes_correction.router, prefix="/api")

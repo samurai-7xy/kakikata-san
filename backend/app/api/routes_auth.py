@@ -40,7 +40,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     except JWTError:
         raise credentials_exception
 
-    async with async_session() as session:  # type: AsyncSession
+    async with async_session() as session:
         result = await session.execute(select(User).where(User.id == int(user_id)))
         user = result.scalars().first()
         if user is None:

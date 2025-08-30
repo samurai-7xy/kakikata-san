@@ -5,12 +5,14 @@ import CloseButton from '@/components/CloseButton';
 import RubyText from "@/components/RubyText";
 import GenkoSheet from "@/components/GenkoSheet";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useRouter } from "next/navigation";
 
 const GenkoYoshiEditor: React.FC = () => {
   const searchParams = useSearchParams(); // ← フックで取得
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const charsPerPage = 400;
+  const router = useRouter();
 
   // URL のクエリから初期テキストを反映
   useEffect(() => {
@@ -24,14 +26,39 @@ const GenkoYoshiEditor: React.FC = () => {
 
   const handleScoring = async () => {
     setIsLoading(true);
-    console.log("採点処理を開始します...");
+    try {
+      console.log("採点処理を開始します...");
 
-    await new Promise(resolve => setTimeout(resolve, 3000));
+      // API 呼び出し
+      const res = await fetch("http://localhost:8000/api/correction/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: text,   // エディターの内容
+          // ここに追加の設定（例: 学年, 評価基準など）があれば送る
+          grade: 3,
+        }),
+      });
 
-    console.log("採点処理が完了しました。");
-    setIsLoading(false);
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("APIエラー詳細:", res.status, errorText);
+        throw new Error(`API request failed: ${res.status}`);
+      }
 
-    alert("採点が完了しました！");
+      const result = await res.json();
+      console.log("採点処理が完了しました:", result);
+
+      // result ページへ遷移してデータを渡す
+      router.push(
+        `/result?data=${encodeURIComponent(JSON.stringify(result))}`
+      );
+    } catch (err) {
+      console.error("採点エラー:", err);
+      alert("採点に失敗しました");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -20,3 +20,32 @@ body {
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
+
+.genko-textarea {
+  /* 見た目 */
+  border: 2px solid #555;
+  background-color: #f9f5e9;
+  color: #333;
+  caret-color: black;
+  
+  /* 文字の配置 (中央揃えのための精密な調整) */
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1.875rem; /* 30px */
+  line-height: 3rem;   /* 48px (1マスのサイズ) */
+  padding: 0.5625rem;  /* (48px - 30px) / 2 = 9px のパディングで中央揃え */
+  box-sizing: border-box;
+  
+  /* 原稿用紙の罫線を描画 */
+  background-image:
+    linear-gradient(to bottom, transparent 98%, #f8d7da 98%), /* 横線 */
+    linear-gradient(to left, transparent 98%, #f8d7da 98%); /* 縦線 */
+  background-size: 3rem 3rem; /* 1マスのサイズ */
+  background-repeat: repeat;
+  background-position: 0 0; /* 線の開始位置をリセット */
+
+  /* 20x20の固定サイズを定義 */
+  width: 60rem;  /* 20マス * 3rem */
+  height: 60rem; /* 20マス * 3rem */
+  overflow: hidden; /* スクロールバーを非表示 */
+  resize: none;     /* サイズ変更を禁止 */
+}

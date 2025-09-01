@@ -20,32 +20,44 @@ body {
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
+/* 句読点や小さい文字を右上に配置するためのスタイル */
+.punctuation {
+  justify-content: start;
+  align-items: start;
+  padding-top: 0.25rem;
+  padding-left: 0.25rem;
+}
 
-.genko-textarea {
-  /* 見た目 */
+/* 原稿用紙の表示グリッド本体 */
+.genko-display-grid {
+  display: grid;
   border: 2px solid #555;
   background-color: #f9f5e9;
-  color: #333;
-  caret-color: black;
   
-  /* 文字の配置 (中央揃えのための精密な調整) */
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-size: 1.875rem; /* 30px */
-  line-height: 3rem;   /* 48px (1マスのサイズ) */
-  padding: 0.5625rem;  /* (48px - 30px) / 2 = 9px のパディングで中央揃え */
-  box-sizing: border-box;
+  /* 20x20のマス目を定義 */
+  grid-template-columns: repeat(20, 2.5rem);
+  grid-template-rows: repeat(20, 2.5rem);
   
-  /* 原稿用紙の罫線を描画 */
-  background-image:
-    linear-gradient(to bottom, transparent 98%, #f8d7da 98%), /* 横線 */
-    linear-gradient(to left, transparent 98%, #f8d7da 98%); /* 縦線 */
-  background-size: 3rem 3rem; /* 1マスのサイズ */
-  background-repeat: repeat;
-  background-position: 0 0; /* 線の開始位置をリセット */
+  /* 縦書きレイアウト */
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
 
-  /* 20x20の固定サイズを定義 */
-  width: 60rem;  /* 20マス * 3rem */
-  height: 60rem; /* 20マス * 3rem */
-  overflow: hidden; /* スクロールバーを非表示 */
-  resize: none;     /* サイズ変更を禁止 */
+/* マス目一つ一つのスタイル */
+.genko-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #f8d7da;
+  font-size: 1.5rem; /* 24px */
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  color: #333;
+}
+
+/* 句読点や小さい文字を右上に配置するためのスタイル */
+.punctuation {
+  justify-content: flex-start; /* 縦書きなので「上」揃え */
+  align-items: flex-start;     /* 縦書きなので「右」揃え */
+  padding-top: 0.25rem;
+  padding-left: 0.25rem;
 }

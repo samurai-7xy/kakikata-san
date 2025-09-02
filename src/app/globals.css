@@ -20,3 +20,44 @@ body {
 body {
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }
+/* 句読点や小さい文字を右上に配置するためのスタイル */
+.punctuation {
+  justify-content: start;
+  align-items: start;
+  padding-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+/* 原稿用紙の表示グリッド本体 */
+.genko-display-grid {
+  display: grid;
+  border: 2px solid #555;
+  background-color: #f9f5e9;
+  
+  /* 20x20のマス目を定義 */
+  grid-template-columns: repeat(20, 2.5rem);
+  grid-template-rows: repeat(20, 2.5rem);
+  
+  /* 縦書きレイアウト */
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* マス目一つ一つのスタイル */
+.genko-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #f8d7da;
+  font-size: 1.5rem; /* 24px */
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  color: #333;
+}
+
+/* 句読点や小さい文字を右上に配置するためのスタイル */
+.punctuation {
+  justify-content: flex-start; /* 縦書きなので「上」揃え */
+  align-items: flex-start;     /* 縦書きなので「右」揃え */
+  padding-top: 0.25rem;
+  padding-left: 0.25rem;
+}

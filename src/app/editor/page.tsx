@@ -27,34 +27,27 @@ const GenkoYoshiEditor: React.FC = () => {
   const handleScoring = async () => {
     setIsLoading(true);
     try {
-      console.log("採点処理を開始します...");
-
-      // API 呼び出し
       const res = await fetch("http://localhost:8000/api/correction/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: text,   // エディターの内容
-          // ここに追加の設定（例: 学年, 評価基準など）があれば送る
-          grade: 3,
-        }),
+        body: JSON.stringify({ content: text, grade: 3 }),
       });
 
       if (!res.ok) {
         const errorText = await res.text();
         console.error("APIエラー詳細:", res.status, errorText);
-        throw new Error(`API request failed: ${res.status}`);
+        alert("採点APIでエラーが発生しました");
+        return;
       }
 
       const result = await res.json();
-      console.log("採点処理が完了しました:", result);
+      console.log("採点結果:", result);
 
-      // result ページへ遷移してデータを渡す
-      router.push(
-        `/result?data=${encodeURIComponent(JSON.stringify(result))}`
-      );
+      // Contextに保存して result ページで表示する方法を推奨
+      sessionStorage.setItem('correctionResult', JSON.stringify(result));
+      router.push("/result"); // データはContextで渡す
     } catch (err) {
-      console.error("採点エラー:", err);
+      console.error("採点処理エラー:", err);
       alert("採点に失敗しました");
     } finally {
       setIsLoading(false);

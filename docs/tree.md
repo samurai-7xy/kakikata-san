@@ -84,9 +84,13 @@ deactivate　仮想環境抜ける
     └── src/
         └── app/
             ├── page.tsx
-            └── user/
-                └── register/
-                    └── page.tsx
+            ├── user/
+            │   └── register/
+            │       └── page.tsx
+            ├── editor/
+            │   └── page.tsx
+            └── review/
+                └── page.tsx
 
 
 # project/
@@ -130,3 +134,7 @@ deactivate　仮想環境抜ける
 #### user/
 ##### register/
 ###### page.tsx
+#### editor/
+###### page.tsx
+#### review/
+##### page.tsx

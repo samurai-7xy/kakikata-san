@@ -1,5 +1,5 @@
-# app/core/openai_client.py
 import os
+import json
 from typing import Optional
 import httpx
 from app.core.config import settings
@@ -15,9 +15,6 @@ async def correct_essay(
 ) -> dict:
     """
     作文添削を行う
-    - essay_text: 元の作文
-    - grade: 学年（任意）
-    - options: 添削オプション（口調、詳細度など）
     """
     if not OPENAI_API_KEY:
         raise ValueError("OpenAI APIキーが設定されていません")
@@ -26,15 +23,32 @@ async def correct_essay(
     if grade:
         system_prompt += f" 学年は {grade} 年生です。"
 
-    # オプションによって文章を調整
     if options:
         tone = options.get("tone")
         if tone:
             system_prompt += f" 口調は {tone} で添削してください。"
 
+    user_prompt = f"""
+以下の文章を校正してください。
+出力は必ずJSON形式にしてください。
+
+{{
+  "修正点": [
+    {{ "元": "xxx", "修正後": "yyy" }},
+    {{ "元": "xxx", "修正後": "yyy" }}
+  ],
+  "提案": [
+    "より自然な表現は xxx です。",
+    "xxx を使うとわかりやすいです。"
+  ]
+}}
+
+文章: {essay_text}
+"""
+
     messages = [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"以下の作文を添削してください:\n{essay_text}"},
+        {"role": "user", "content": user_prompt},
     ]
 
     payload = {
@@ -56,8 +70,12 @@ async def correct_essay(
             )
         response.raise_for_status()
         data = response.json()
-        # 返却形式を整形
+
         corrected_text = data["choices"][0]["message"]["content"]
-        return {"corrected_content": corrected_text, "raw_response": data}
-    except httpx.HTTPError as e:
+        # dict かもしれないので文字列化して返す
+        corrected_text_str = str(corrected_text)
+
+        return {"corrected_content": corrected_text_str, "raw_response": data}
+
+    except Exception as e:
         raise RuntimeError(f"OpenAI API呼び出しエラー: {str(e)}")

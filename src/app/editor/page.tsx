@@ -59,7 +59,7 @@ const GenkoYoshiEditor: React.FC = () => {
   return (
     <>
       <LoadingSpinner isVisible={isLoading} />
-      <div className="flex flex-col min-h-screen bg-[#f3f4f6] p-4 sm:p-8">
+      <div className="flex flex-col min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
         <header className="flex-shrink-0 w-full max-w-5xl mx-auto flex justify-between items-center mb-4">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-700">
             <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />

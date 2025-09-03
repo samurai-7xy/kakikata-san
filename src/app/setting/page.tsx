@@ -40,7 +40,7 @@ return (
                   className="hidden"
                 />
                 <span className={`w-6 h-6 inline-block mr-4 border-2 rounded-full transition-all duration-200 ${
-                  rubyMode === option.id ? 'border-orange-400 bg-orange-400' : 'border-gray-400'
+                  rubyMode === option.id ? 'border-[#F5A623] bg-[#F5A623]' : 'border-gray-400'
                 }`}></span>
                 {option.label}
               </label>

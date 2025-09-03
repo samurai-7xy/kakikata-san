@@ -28,7 +28,7 @@ export default function HomePage() {
         </p>
       </header>
 
-      {/* 中心のボタンセクション (grid-backgroundクラスを削除) */}
+      {/* 中心のボタンセクション*/}
       <main className="flex-grow flex flex-col items-center justify-center p-4 md:p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl">
             <Link
@@ -52,24 +52,23 @@ export default function HomePage() {
           </Link>
           <Link
             href="/user/register"
-            className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
+            className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
             <div>
               <RubyText segments={[{ text: 'ユーザー登録', ruby: 'ゆーざーとうろく' }]} />
             </div>
           </Link>
           <Link
             href="/user/login"
-            className="w-full h-[298px] bg-[#4A90E2] text-white font-semibold text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
+            className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
             <div>
               <RubyText segments={[{ text: 'ログイン', ruby: 'ろぐいん' }]} />
             </div>
           </Link>
         </div>
         <div className="mt-4 w-full max-w-lg">
-
          <Link
             href="/device-select" 
-            className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"> 
+            className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center">
         <div>
           <RubyText segments={[{ text: '使', ruby: 'つか' }, { text: 'い' }, { text: '方', ruby: 'かた' }, { text: 'の' }, { text: '説明', ruby: 'せつめい' }]} />
         </div>

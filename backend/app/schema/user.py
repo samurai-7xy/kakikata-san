@@ -17,6 +17,20 @@ class UserLogin(BaseModel):
     password: str
 
 
+# ログイン成功時のレスポンス
+class UserLoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    id: int
+    username: str
+    email: EmailStr
+    grade: Optional[str]
+    age: Optional[int]
+
+    class Config:
+        from_attributes = True
+
+
 # プロフィール返却用
 class UserProfile(BaseModel):
     id: int

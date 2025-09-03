@@ -11,36 +11,32 @@ const GenkoYoshiEditor: React.FC = () => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams(); // ← 追加
   const charsPerPage = 400;
 
   const settingsContext = useContext(SettingsContext);
-  const rubyMode = settingsContext?.rubyMode || 'furigana';
+  const rubyMode = settingsContext?.rubyMode || "furigana";
 
   const [scale, setScale] = useState(1.0);
   const genkoWidth = 960; // 原稿用紙の基本幅 (px)
 
+  // ✅ クエリパラメータから初期値を反映
+  useEffect(() => {
+    const paramText = searchParams.get("text");
+    if (paramText) {
+      setText(decodeURIComponent(paramText)); // URLエンコードされた文字列をデコード
+    }
+  }, [searchParams]);
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     // 画面幅を取得し、余白を考慮してスケールを計算
-  //     const containerWidth = window.innerWidth - 64; // 左右の余白分を引く
-  //     if (containerWidth < genkoWidth) {
-  //       setScale(containerWidth / genkoWidth);
-  //     } else {
-  //       setScale(1.0);
-  //     }
-  //   };
-
-   useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       let containerWidth;
 
-      //画面サイズに応じて、余白の計算方法を変更
-      if (screenWidth < 768) { // スマートフォンの場合 (mdブレークポイント)
-        containerWidth = screenWidth - 32; // 左右の余白を16pxずつにする
-      } else { // タブレット以上の場合
-        containerWidth = screenWidth - 64; // 左右の余白を32pxずつにする
+      if (screenWidth < 768) {
+        containerWidth = screenWidth - 32;
+      } else {
+        containerWidth = screenWidth - 64;
       }
 
       if (containerWidth < genkoWidth) {
@@ -50,14 +46,10 @@ const GenkoYoshiEditor: React.FC = () => {
       }
     };
 
-    // 初期表示時と画面サイズ変更時に計算を実行
     handleResize();
-    window.addEventListener('resize', handleResize);
-    
-    // コンポーネントが不要になったらイベント監視を解除
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
-
 
   const pageCount = useMemo(() => {
     return Math.max(1, Math.ceil(text.length / charsPerPage));
@@ -89,11 +81,8 @@ const GenkoYoshiEditor: React.FC = () => {
       const result = await res.json();
       console.log("採点結果:", result);
 
-      // Contextに保存して result ページで表示する方法を推奨
-      sessionStorage.setItem('correctionResult', JSON.stringify(result));
-      router.push(
-        `/result?data=${encodeURIComponent(JSON.stringify(result))}`
-      );
+      sessionStorage.setItem("correctionResult", JSON.stringify(result));
+      router.push(`/result?data=${encodeURIComponent(JSON.stringify(result))}`);
     } catch (err) {
       console.error("採点処理エラー:", err);
       alert("採点に失敗しました");
@@ -102,11 +91,10 @@ const GenkoYoshiEditor: React.FC = () => {
     }
   };
 
-    const placeholderText = useMemo(() => {
-    if (rubyMode === 'hiragana') {
+  const placeholderText = useMemo(() => {
+    if (rubyMode === "hiragana") {
       return "ここに ぶんしょうを にゅうりょく してください...";
     }
-    // 「よみがな」モードはplaceholderにルビを振れないため、漢字のまま表示
     return "ここに文章を入力してください...";
   }, [rubyMode]);
 
@@ -117,7 +105,13 @@ const GenkoYoshiEditor: React.FC = () => {
         <CloseButton href="/" />
         <header className="flex-shrink-0 w-full max-w-5xl mx-auto flex justify-between items-center mb-4">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-700">
-            <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />
+            <RubyText
+              segments={[
+                { text: "文章", ruby: "ぶんしょう" },
+                { text: "を" },
+                { text: "入力", ruby: "にゅうりょく" },
+              ]}
+            />
           </h1>
         </header>
 
@@ -130,44 +124,51 @@ const GenkoYoshiEditor: React.FC = () => {
               className="w-full h-48 sm:h-56 p-4 border-2 border-gray-300 rounded-md resize-y focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
               placeholder={placeholderText}
             />
-            {/* ✨ 1. 文字数カウンターを追加 */}
             <div className="text-right text-gray-600 mt-1 pr-2">
-              {text.length} / 400 <RubyText segments={[{ text: '文字', ruby: 'もじ' },]} />
+              {text.length} / 400{" "}
+              <RubyText segments={[{ text: "文字", ruby: "もじ" }]} />
             </div>
           </div>
 
-          {/* ===== 操作ボタンエリア ===== */}
           <div className="flex items-center gap-4 my-4">
             <button
               onClick={handleReset}
               className="px-6 py-2 bg-[#F5A623] text-white font-semibold rounded-md shadow hover:bg-[#D99A1C] transition"
             >
-              <RubyText segments={[{ text: 'リセット', ruby: 'りせっと' }]} />
+              <RubyText
+                segments={[{ text: "リセット", ruby: "りせっと" }]}
+              />
             </button>
           </div>
 
-            {/* ===== 原稿用紙 表示エリア ===== */}
-            <div className="mt-4 flex flex-col items-center gap-8 w-full">
+          <div className="mt-4 flex flex-col items-center gap-8 w-full">
             {Array.from({ length: pageCount }).map((_, pageIndex) => (
               <div key={pageIndex} className="flex justify-center w-full">
-              <GenkoDisplay
-                text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
-                isFirstPage={pageIndex === 0}
-                scale={scale}
-              />
+                <GenkoDisplay
+                  text={text.slice(
+                    pageIndex * charsPerPage,
+                    (pageIndex + 1) * charsPerPage
+                  )}
+                  isFirstPage={pageIndex === 0}
+                  scale={scale}
+                />
               </div>
             ))}
-            </div>
+          </div>
         </main>
 
-        {/* 採点ボタン */}
         {text.length > 0 && (
           <button
             onClick={handleScoring}
             disabled={isLoading}
             className="fixed bottom-8 right-8 bg-green-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed z-30"
           >
-            <RubyText segments={[{ text: '採点', ruby: 'さいてん' }, { text: 'する' }]} />
+            <RubyText
+              segments={[
+                { text: "採点", ruby: "さいてん" },
+                { text: "する" },
+              ]}
+            />
           </button>
         )}
       </div>
@@ -176,4 +177,3 @@ const GenkoYoshiEditor: React.FC = () => {
 };
 
 export default GenkoYoshiEditor;
-

@@ -24,3 +24,6 @@ app.include_router(routes_ocr.router)
 
 # API登録
 app.include_router(routes_correction.router, prefix="/api")
+
+# ログイン
+app.include_router(users_router, prefix="/api/users")

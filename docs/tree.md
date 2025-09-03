@@ -44,7 +44,6 @@ routes + services + models を全部つなげて Mac 上で動かす簡単な起
 deactivate　仮想環境抜ける
 
 
-
 .
 └── project/
     ├── backend/
@@ -85,12 +84,15 @@ deactivate　仮想環境抜ける
         └── app/
             ├── page.tsx
             ├── user/
-            │   └── register/
+            │   ├── register/
+            │   └── login/
+            │       ├── page.tsx
             │       └── page.tsx
             ├── editor/
             │   └── page.tsx
             └── review/
                 └── page.tsx
+
 
 
 # project/
@@ -133,6 +135,8 @@ deactivate　仮想環境抜ける
 #### page.tsx
 #### user/
 ##### register/
+##### login/
+###### page.tsx
 ###### page.tsx
 #### editor/
 ###### page.tsx

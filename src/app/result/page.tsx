@@ -1,9 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
 import { Button } from '@/components/button';
+import RubyText from '@/components/RubyText';
+import { Download, FileText, Image as ImageIcon, FileType } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 interface CorrectionPoint {
     元: string;
@@ -24,25 +28,100 @@ export default function ResultPage() {
     const router = useRouter();
     const [resultData, setResultData] = useState<ApiResult | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showSaveModal, setShowSaveModal] = useState(false);
+    const resultCardRef = useRef<HTMLDivElement>(null); // 保存する要素への参照
+
 
     useEffect(() => {
         const stored = sessionStorage.getItem('correctionResult');
+    //     if (stored) {
+    //         const parsed = JSON.parse(stored);
+
+    //         // corrected_content が文字列ならオブジェクトに変換
+    //         if (typeof parsed.corrected_content === 'string') {
+    //             try {
+    //                 parsed.corrected_content = JSON.parse(parsed.corrected_content);
+    //             } catch (err) {
+    //                 console.error('corrected_content の JSON パースに失敗:', err);
+    //                 parsed.corrected_content = { 修正点: [], 提案: [] };
+    //             }
+    //         }
+
+    //         setResultData(parsed);
+    //     }
+    // }, []);
         if (stored) {
-            const parsed = JSON.parse(stored);
-
-            // corrected_content が文字列ならオブジェクトに変換
-            if (typeof parsed.corrected_content === 'string') {
-                try {
+            try {
+                const parsed = JSON.parse(stored);
+                if (typeof parsed.corrected_content === 'string') {
                     parsed.corrected_content = JSON.parse(parsed.corrected_content);
-                } catch (err) {
-                    console.error('corrected_content の JSON パースに失敗:', err);
-                    parsed.corrected_content = { 修正点: [], 提案: [] };
                 }
+                setResultData(parsed);
+            } catch (error) {
+                console.error("Failed to parse result data:", error);
             }
-
-            setResultData(parsed);
         }
+        setLoading(false);
     }, []);
+
+     const handleSave = async (format: 'pdf' | 'png' | 'jpeg' | 'text') => {
+        if (!resultCardRef.current || !resultData) return;
+    
+        const element = resultCardRef.current;
+        const fileName = `採点結果_${new Date().toISOString().split('T')[0]}`;
+
+        if (format === 'text') {
+            let textContent = `採点結果\n\n`;
+            textContent += `■ 改善アドバイス\n`;
+            // ✨ データが存在するか必ずチェックしてから処理する
+            if (resultData.corrected_content.提案 && Array.isArray(resultData.corrected_content.提案)) {
+                resultData.corrected_content.提案.forEach(p => textContent += `- ${p}\n`);
+            }
+            textContent += `\n■ 修正ポイント\n`;
+            // データが存在するか必ずチェックしてから処理する
+            if (resultData.corrected_content.修正点 && Array.isArray(resultData.corrected_content.修正点)) {
+                resultData.corrected_content.修正点.forEach(p => {
+                    textContent += `- 元: ${p.元}\n`;
+                    textContent += `  修正後: ${p.修正後}\n`;
+                });
+            }
+            const blob = new Blob([textContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${fileName}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            setShowSaveModal(false);
+            return;
+        }
+        
+        const canvas = await html2canvas(element, { 
+            scale: 2,
+            backgroundColor: null,
+            useCORS: true 
+        } as any);
+
+         
+        if (format === 'pdf') {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`${fileName}.pdf`);
+        } else {
+            const image = canvas.toDataURL(`image/${format}`, 1.0);
+            const a = document.createElement('a');
+            a.href = image;
+            a.download = `${fileName}.${format}`;
+            a.click();
+        }
+        setShowSaveModal(false);
+    };
+
 
     if (loading) {
         return (
@@ -65,59 +144,68 @@ export default function ResultPage() {
 
     return (
         <div className="relative flex min-h-screen items-center justify-center bg-gray-100 p-4">
-            <Card className="w-full max-w-2xl shadow-lg">
-                <CardHeader className="flex flex-col items-center justify-center p-6">
-                    <CardTitle className="text-3xl font-bold">採点結果</CardTitle>
-                </CardHeader>
-
-                <CardContent className="p-6 space-y-6">
-                    {/* 改善アドバイス */}
-                    {corrected_content.提案 && corrected_content.提案.length > 0 && (
-                        <div className="rounded-md border border-blue-400 bg-blue-50 p-4 text-blue-800">
-                            <h2 className="text-xl font-semibold mb-2">改善アドバイス</h2>
-                            <ul className="list-disc list-inside space-y-1">
-                                {corrected_content.提案.map((advice, idx) => (
-                                    <li key={idx}>{advice}</li>
-                                ))}
-                            </ul>
+            <div ref={resultCardRef} className="w-full max-w-2xl bg-white">
+                <Card className="shadow-lg border-0">
+                    <CardHeader className="flex flex-col items-center justify-center p-6 border-b">
+                        <CardTitle className="text-3xl font-bold text-gray-800">
+                            <RubyText segments={[{text:'採点結果', ruby:'さいてんけっか'}]} />
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-6">
+                        {/* ✨ データが存在するか必ずチェックしてから表示する */}
+                        {corrected_content.提案 && corrected_content.提案.length > 0 && (
+                            <div className="rounded-md border border-blue-400 bg-blue-50 p-4 text-blue-800">
+                                <h2 className="text-xl font-semibold mb-2">改善アドバイス</h2>
+                                <ul className="list-disc list-inside space-y-1">
+                                    {corrected_content.提案.map((advice, idx) => <li key={idx}>{advice}</li>)}
+                                </ul>
+                            </div>
+                        )}
+                        {/* ✨ データが存在するか必ずチェックしてから表示する */}
+                        {corrected_content.修正点 && corrected_content.修正点.length > 0 ? (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-2 text-gray-700">修正ポイント</h2>
+                                <ul className="space-y-3">
+                                    {corrected_content.修正点.map((point, idx) => (
+                                        <li key={idx} className="rounded-md border border-gray-300 bg-gray-50 p-3">
+                                            <p className="text-gray-600"><strong>元:</strong> {point.元}</p>
+                                            <p className="text-green-700"><strong>修正後:</strong> {point.修正後}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <p className="text-center text-gray-500 py-4">修正ポイントはありませんでした。</p>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+        {/* フローティングアクションボタン */}
+            <div className="absolute bottom-8 right-8">
+                 <Button
+                    onClick={() => setShowSaveModal(true)}
+                    className="h-16 w-16 rounded-full bg-[#4A90E2] text-white shadow-lg hover:bg-blue-600 flex items-center justify-center"
+                >
+                    <Download size={32} />
+                </Button>
+            </div>
+            {/* 保存モーダル */}
+            {showSaveModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-2xl p-8 max-w-sm w-full">
+                        <h2 className="text-2xl font-bold text-center mb-6">保存形式を選択</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                             <Button onClick={() => handleSave('pdf')} className="flex items-center justify-center gap-2 py-6 text-lg"><FileType /> PDF</Button>
+                             <Button onClick={() => handleSave('png')} className="flex items-center justify-center gap-2 py-6 text-lg"><ImageIcon /> PNG</Button>
+                             <Button onClick={() => handleSave('jpeg')} className="flex items-center justify-center gap-2 py-6 text-lg"><ImageIcon /> JPEG</Button>
+                             <Button onClick={() => handleSave('text')} className="flex items-center justify-center gap-2 py-6 text-lg"><FileText /> テキスト</Button>
                         </div>
-                    )}
-
-                    {/* 修正ポイント */}
-                    {corrected_content.修正点 && corrected_content.修正点.length > 0 ? (
-                        <div>
-                            <h2 className="text-xl font-semibold mb-2">修正ポイント</h2>
-                            <ul className="space-y-2">
-                                {corrected_content.修正点.map((point, idx) => (
-                                    <li
-                                        key={idx}
-                                        className="rounded-md border border-gray-300 bg-gray-50 p-3"
-                                    >
-                                        <p>
-                                            <strong>元:</strong> {point.元}
-                                        </p>
-                                        <p>
-                                            <strong>修正後:</strong> {point.修正後}
-                                        </p>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ) : (
-                        <p className="text-gray-500">修正ポイントはありません。</p>
-                    )}
-                </CardContent>
-
-                {/* ボタン */}
-                <div className="flex justify-center gap-4 p-6 pt-0">
-                    <Button
-                        onClick={() => router.push('/')}
-                        className="h-12 w-full max-w-[200px] rounded-lg bg-gray-500 text-white hover:bg-gray-600"
-                    >
-                        ホームに戻る
-                    </Button>
+                        <Button onClick={() => setShowSaveModal(false)} className="w-full mt-6 bg-gray-500 hover:bg-gray-600">
+                            キャンセル
+                        </Button>
+                    </div>
                 </div>
-            </Card>
+            )}
         </div>
     );
 }

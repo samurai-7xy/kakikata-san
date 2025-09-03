@@ -53,9 +53,9 @@ export default function ReviewPage() {
 
   if (images.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+      <div className="relative flex flex-col items-center justify-center min-h-screen text-center">
         <p className="text-2xl mb-4">画像が選択されていません。</p>
-        <Link href="/upload" className="text-blue-500 hover:underline">選択ページに戻る</Link>
+        <Link href="/upload" className="text-[#4A90E2] hover:underline">選択ページに戻る</Link>
       </div>
     );
   }

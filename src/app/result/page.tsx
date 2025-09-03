@@ -64,7 +64,7 @@ export default function ResultPage() {
     const { corrected_content } = resultData;
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+        <div className="relative flex min-h-screen items-center justify-center bg-gray-100 p-4">
             <Card className="w-full max-w-2xl shadow-lg">
                 <CardHeader className="flex flex-col items-center justify-center p-6">
                     <CardTitle className="text-3xl font-bold">採点結果</CardTitle>

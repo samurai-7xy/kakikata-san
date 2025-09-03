@@ -1,6 +1,6 @@
 import React from 'react';
 
-// アイコンのスタイルをpropsで受け取れるようにしておくと便利です
+// アイコンのスタイルをpropsで受け取れるようにしておく
 type IconProps = {
   className?: string;
 };

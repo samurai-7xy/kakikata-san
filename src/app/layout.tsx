@@ -18,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      {/* ↓ 3. bodyタグから className={inter.className} を削除 */}
+      <head>
+        {/*この一行がレスポンシブ対応に絶対に必要 */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body>
         <SettingsProvider>
           <ImageProvider>

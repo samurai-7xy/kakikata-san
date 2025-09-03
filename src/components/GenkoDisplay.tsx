@@ -8,9 +8,10 @@ interface GenkoDisplayProps {
 interface GenkoDisplayProps {
   text: string;
   isFirstPage?: boolean;
+  scale?: number;
 }
 
-const GenkoDisplay: React.FC<GenkoDisplayProps> = ({ text , isFirstPage = false }) => {
+const GenkoDisplay: React.FC<GenkoDisplayProps> = ({ text , isFirstPage = false, scale = 1.0 }) => {
   const rows = 20;
   const cols = 20;
   const totalCells = rows * cols;
@@ -31,7 +32,8 @@ const GenkoDisplay: React.FC<GenkoDisplayProps> = ({ text , isFirstPage = false 
 
   return (
     <div
-      className="genko-display-grid" // 新しいCSSクラスを適用
+      className="genko-display-grid mx-auto" // 新しいCSSクラスを適用
+      style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}
     >
       {/* 400個のマス目を生成 */}
       {Array.from({ length: totalCells }).map((_, i) => (

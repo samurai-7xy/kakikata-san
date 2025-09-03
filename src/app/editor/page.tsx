@@ -13,6 +13,29 @@ const GenkoYoshiEditor: React.FC = () => {
   const router = useRouter();
   const charsPerPage = 400;
 
+  const [scale, setScale] = useState(1.0);
+  const genkoWidth = 960; // 原稿用紙の基本幅 (px)
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 画面幅を取得し、余白を考慮してスケールを計算
+      const containerWidth = window.innerWidth - 64; // 左右の余白分を引く
+      if (containerWidth < genkoWidth) {
+        setScale(containerWidth / genkoWidth);
+      } else {
+        setScale(1.0);
+      }
+    };
+    
+    // 初期表示時と画面サイズ変更時に計算を実行
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    // コンポーネントが不要になったらイベント監視を解除
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   const pageCount = useMemo(() => {
     return Math.max(1, Math.ceil(text.length / charsPerPage));
   }, [text.length]);
@@ -59,12 +82,12 @@ const GenkoYoshiEditor: React.FC = () => {
   return (
     <>
       <LoadingSpinner isVisible={isLoading} />
-      <div className="flex flex-col min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
+      <div className="relative flex flex-col min-h-screen bg-[#FAFAFA] p-4 sm:p-8">
+        <CloseButton href="/" />
         <header className="flex-shrink-0 w-full max-w-5xl mx-auto flex justify-between items-center mb-4">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-700">
             <RubyText segments={[{ text: '文章', ruby: 'ぶんしょう' }, { text: 'を' }, { text: '入力', ruby: 'にゅうりょく' }]} />
           </h1>
-          <CloseButton href="/" />
         </header>
 
         <main className="flex-grow flex flex-col items-center w-full max-w-5xl mx-auto">
@@ -78,7 +101,7 @@ const GenkoYoshiEditor: React.FC = () => {
             />
             {/* ✨ 1. 文字数カウンターを追加 */}
             <div className="text-right text-gray-600 mt-1 pr-2">
-              {text.length} / 400 文字
+              {text.length} / 400 <RubyText segments={[{ text: '文字', ruby: 'もじ' },]} />
             </div>
           </div>
 
@@ -98,6 +121,9 @@ const GenkoYoshiEditor: React.FC = () => {
               <GenkoDisplay
                 key={pageIndex}
                 text={text.slice(pageIndex * charsPerPage, (pageIndex + 1) * charsPerPage)}
+                isFirstPage={pageIndex === 0}
+                //計算した縮尺をGenkoDisplayに渡す
+                scale={scale}
               />
             ))}
           </div>

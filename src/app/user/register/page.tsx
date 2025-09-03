@@ -36,12 +36,11 @@ export default function RegisterPage() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-6 rounded-lg shadow-md w-80"
+                className="relative bg-white p-6 rounded-lg shadow-md w-80"
             >
-                <CloseButton />
-                <h1 className="text-xl font-bold mb-4"><RubyText segments={[{text:'ユーザー登録',ruby:'ゆーざーとうろく'}]}/></h1>
-
+                <h1 className="text-xl font-bold mb-4 text-center"><RubyText segments={[{text:'ユーザー登録',ruby:'ゆーざーとうろく'}]}/></h1>
                 <div className="mb-3">
+                    <CloseButton />
                     <label className="block mb-1">
                         <RubyText segments={[{text:'ユーザー名',ruby:'ゆーざーめい'}]}/>
                     </label>

@@ -6,7 +6,7 @@ export default function DeviceSelectPage() {
   const devices = ['iPhone', 'Android', 'Mac', 'Windows', 'iPad'];
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-800 bg-opacity-75">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-800 bg-opacity-75">
       <div className="relative w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <CloseButton />
         

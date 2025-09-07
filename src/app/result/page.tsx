@@ -2,12 +2,13 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter} from '@/components/card';
 import { Button } from '@/components/button';
 import RubyText from '@/components/RubyText';
-import { Download, FileText, Image as ImageIcon, FileType } from 'lucide-react';
+import { Download, FileText, Image as ImageIcon, FileType, Edit } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import CloseButton from '@/components/CloseButton';
 
 interface CorrectionPoint {
     元: string;
@@ -15,13 +16,14 @@ interface CorrectionPoint {
 }
 
 interface CorrectionResult {
-    修正点: CorrectionPoint[];
-    提案: string[];
+    修正点?: CorrectionPoint[];
+    提案?: string[];
 }
 
 interface ApiResult {
     corrected_content: CorrectionResult;
-    raw_response?: any;
+    //raw_response?: any;
+    original_content?: string;
 }
 
 export default function ResultPage() {
@@ -34,6 +36,7 @@ export default function ResultPage() {
 
     useEffect(() => {
         const stored = sessionStorage.getItem('correctionResult');
+        const storedOriginalText = sessionStorage.getItem('originalText');
     //     if (stored) {
     //         const parsed = JSON.parse(stored);
 
@@ -56,6 +59,10 @@ export default function ResultPage() {
                 if (typeof parsed.corrected_content === 'string') {
                     parsed.corrected_content = JSON.parse(parsed.corrected_content);
                 }
+                // ✨ 取得した元の文章を結果データに追加
+                if (storedOriginalText) {
+                    parsed.original_content = storedOriginalText;
+                }
                 setResultData(parsed);
             } catch (error) {
                 console.error("Failed to parse result data:", error);
@@ -64,6 +71,13 @@ export default function ResultPage() {
         setLoading(false);
     }, []);
 
+    // ✨「書き直す」ボタンが押されたときの処理
+    const handleRewrite = () => {
+        if (resultData?.original_content) {
+            // 元の文章をURLに含めてエディターページに移動
+            router.push(`/editor?text=${encodeURIComponent(resultData.original_content)}`);
+        }
+    };
      const handleSave = async (format: 'pdf' | 'png' | 'jpeg' | 'text') => {
         if (!resultCardRef.current || !resultData) return;
     
@@ -71,7 +85,8 @@ export default function ResultPage() {
         const fileName = `採点結果_${new Date().toISOString().split('T')[0]}`;
 
         if (format === 'text') {
-            let textContent = `採点結果\n\n`;
+            let textContent = `【元の文章】\n${resultData.original_content || ''}\n\n`;
+            textContent += `採点結果\n\n`;
             textContent += `■ 改善アドバイス\n`;
             // ✨ データが存在するか必ずチェックしてから処理する
             if (resultData.corrected_content.提案 && Array.isArray(resultData.corrected_content.提案)) {
@@ -140,11 +155,12 @@ export default function ResultPage() {
         );
     }
 
-    const { corrected_content } = resultData;
+    const { corrected_content, original_content } = resultData;
 
     return (
         <div className="relative flex min-h-screen items-center justify-center bg-gray-100 p-4">
             <div ref={resultCardRef} className="w-full max-w-2xl bg-white">
+                <CloseButton />
                 <Card className="shadow-lg border-0">
                     <CardHeader className="flex flex-col items-center justify-center p-6 border-b">
                         <CardTitle className="text-3xl font-bold text-gray-800">
@@ -152,6 +168,13 @@ export default function ResultPage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 space-y-6">
+                        {/* ✨ 元の文章を表示するエリア */}
+                        {original_content && (
+                             <div>
+                                <h2 className="text-xl font-semibold mb-2 text-gray-700">元の文章</h2>
+                                <p className="rounded-md border border-gray-300 bg-gray-50 p-3 whitespace-pre-wrap">{original_content}</p>
+                            </div>
+                        )}
                         {/* ✨ データが存在するか必ずチェックしてから表示する */}
                         {corrected_content.提案 && corrected_content.提案.length > 0 && (
                             <div className="rounded-md border border-blue-400 bg-blue-50 p-4 text-blue-800">
@@ -178,6 +201,17 @@ export default function ResultPage() {
                             <p className="text-center text-gray-500 py-4">修正ポイントはありませんでした。</p>
                         )}
                     </CardContent>
+                    <CardFooter className="p-6 flex justify-center gap-4">
+                        <Button onClick={handleRewrite} className="bg-orange-500 hover:bg-orange-600 flex items-center gap-2">
+                            <Edit size={18} />
+                            書き直す
+                        </Button>
+                       <Button 
+                          onClick={() => router.push('/')} 
+                          className="bg-[#4A90E2] hover:bg-blue-600" >
+                            ホームに戻る
+                        </Button>
+                    </CardFooter>
                 </Card>
             </div>
         {/* フローティングアクションボタン */}

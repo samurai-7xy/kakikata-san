@@ -82,6 +82,8 @@ const GenkoYoshiEditor: React.FC = () => {
       console.log("採点結果:", result);
 
       sessionStorage.setItem("correctionResult", JSON.stringify(result));
+      sessionStorage.setItem('originalText', text); 
+      router.push(`/result`);
       router.push(`/result?data=${encodeURIComponent(JSON.stringify(result))}`);
     } catch (err) {
       console.error("採点処理エラー:", err);

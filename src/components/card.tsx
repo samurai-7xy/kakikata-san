@@ -20,3 +20,7 @@ export const CardContent = ({ children, className }: CardProps) => (
 export const CardTitle = ({ children, className }: CardProps) => (
     <h2 className={`text-xl font-bold ${className}`}>{children}</h2>
 );
+
+export const CardFooter = ({ children, className }: CardProps) => (
+    <div className={`p-4 border-t ${className}`}>{children}</div>
+);

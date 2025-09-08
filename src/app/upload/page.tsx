@@ -62,9 +62,9 @@ export default function UploadPage() {
           className="w-full bg-[#4A90E2] text-white font-semibold text-2xl py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300"
         >
           {images.length > 0 ? (
-            <RubyText segments={[{ text: '写真を追加', ruby: 'しゃしんをついか' }]} />
+            <RubyText segments={[{ text: '写真', ruby: 'しゃしん' },{ text: 'を'},{ text: '追加', ruby: 'ついか' }]} />
           ) : (
-            <RubyText segments={[{ text: '写真を選ぶ', ruby: 'しゃしんをえらぶ' }]} />
+            <RubyText segments={[{ text: '写真', ruby: 'しゃしん' },{ text: 'を'},{ text: '選択', ruby: 'せんたく' }]} />
           )}
         </button>
 
@@ -73,7 +73,7 @@ export default function UploadPage() {
             href="/review"
             className="w-full bg-green-500 text-white font-semibold text-2xl py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-300 flex items-center justify-center text-center"
           >
-            <RubyText segments={[{ text: '次へ進む', ruby: 'つぎへすすむ' }]} />
+            <RubyText segments={[{ text: '次', ruby: 'つぎ' },{ text: 'へ' },{ text: '進む', ruby: 'すすむ' }]} />
           </Link>
         )}
       </div>

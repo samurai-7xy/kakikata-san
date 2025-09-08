@@ -113,7 +113,7 @@ export default function ResultPage() {
         
         const canvas = await html2canvas(element, { 
             scale: 2,
-            backgroundColor: null,
+            backgroundColor: '#ffffff',
             useCORS: true 
         } as any);
 

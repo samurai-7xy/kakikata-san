@@ -48,8 +48,17 @@ export default function HomePage() {
         </h1>
 
         {/* 説明文 */}
-        <p className="mt-8 md:mt-12 text-[#2C2C2C] max-w-4xl mx-auto leading-relaxed text-center text-lg md:text-2xl lg:text-[35px] px-4">
-          <RubyText segments={[{ text: '本', ruby: 'ほん' }, { text: 'アプリ', ruby: 'あぷり' }, { text: 'はあああああああああああああああああああああああああああああああああああああああああああああああああああああああ' }]} />
+        <p className="mt-8 md:mt-12 text-[#2C2C2C] max-w-4xl mx-auto leading-loose text-center text-lg md:text-2xl lg:text-[35px] px-4">
+          <RubyText segments={[{ text: 'この'},{ text: 'アプリ', ruby: 'あぷり' },{ text: 'は'},
+            { text: '文章', ruby: 'ぶんしょう' },{ text: 'を' },{ text: '書', ruby: 'か' },{ text: 'くのがもっと'},
+            { text: '楽', ruby: 'たの' },{ text: 'しく、'},{text:'上手', ruby:'じょうず'},{text:'にになるためのお'},
+            {text:'手伝', ruby:'てつだ'},{text:'いをします。'},{text:'手書', ruby:'てが'},{text:'きの'},
+            {text:'写真', ruby:'しゃしん'},{text:'や、'},{text:'打', ruby:'う'},{text:'ち'},{text:'込', ruby:'こ'},
+            {text:'んだ'},{text:'文章', ruby:'ぶんしょう'},{text:'を'},{text:'AI', ruby:'えーあい'},{text:'が'},{text:'丁寧', ruby:'ていねい'},
+            {text:'に'},{text:'チェック', ruby:'ちぇっく'},{text:'し、'},{text:'改善', ruby:'かいぜん'},{text:'のための'},{text:'アドバイス', ruby:'あどばいす'},{text:'や'},
+            {text:'修正案', ruby:'しゅうせいあん'},{text:'を'},{text:'提案', ruby:'ていあん'},{text:'します。'},
+            {text:'自分', ruby:'じぶん'},{text:'の'},{text:'考', ruby:'かんが'},{text:'えを'},{text:'文章', ruby:'ぶんしょう'},
+            {text:'にする'},{text:'練習', ruby:'れんしゅう'},{text:'を'},{text:'一緒', ruby:'いっしょ'},{text:'に'},{text:'していきましょう。'}]} />
         </p>
       </header>
 

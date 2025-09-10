@@ -73,7 +73,7 @@ export default function UploadPage() {
             href="/review"
             className="w-full bg-green-500 text-white font-semibold text-2xl py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-300 flex items-center justify-center text-center"
           >
-            <RubyText segments={[{ text: '次', ruby: 'つぎ' },{ text: 'へ' },{ text: '進む', ruby: 'すすむ' }]} />
+            <RubyText segments={[{ text: '次', ruby: 'つぎ' },{ text: 'へ', ruby: 'へ' },{ text: '進む', ruby: 'すすむ' }]} />
           </Link>
         )}
       </div>

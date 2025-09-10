@@ -1,21 +1,14 @@
 # backend/create_db.py
-import asyncio
-from sqlalchemy.ext.asyncio import create_async_engine
-from app.db.base import Base  # Base は全モデルの親
+
+from sqlalchemy import create_engine
+from app.db.base import Base
 from app.models.user import User
+from app.models.essay import Essay  # Essayモデルもある場合
 
-DATABASE_URL = "sqlite+aiosqlite:///./test.db"
-engine = create_async_engine(DATABASE_URL, echo=True)
+DATABASE_URL = "sqlite:///./mydatabase.db"  # mydatabase.dbはbackend配下に作成されます
 
+engine = create_engine(DATABASE_URL, echo=True)
 
-async def init_db():
-    async with engine.begin() as conn:
-        # 既存テーブルがあれば削除
-        await conn.run_sync(Base.metadata.drop_all)
-        # 新しいテーブルを作成
-        await conn.run_sync(Base.metadata.create_all)
-    print("DBとテーブルを作成しました")
-
-
-if __name__ == "__main__":
-    asyncio.run(init_db())
+# テーブル作成
+Base.metadata.create_all(bind=engine)
+print("✅ データベースとテーブルを作成しました")

@@ -14,11 +14,12 @@ async def correct_essay(
     options: Optional[dict] = None,
 ) -> dict:
     """
-    作文添削を行う
+    作文添削 + 内容の深掘り提案を行う
     """
     if not OPENAI_API_KEY:
         raise ValueError("OpenAI APIキーが設定されていません")
 
+    # 学年や口調を考慮
     system_prompt = "あなたは小学生向けの作文添削アシスタントです。"
     if grade:
         system_prompt += f" 学年は {grade} 年生です。"
@@ -28,8 +29,13 @@ async def correct_essay(
         if tone:
             system_prompt += f" 口調は {tone} で添削してください。"
 
+    # ユーザーへの指示を追加（文法＋深掘り）
     user_prompt = f"""
 以下の文章を校正してください。
+- 誤字脱字や日本語表現を直す
+- 不自然な言い回しを修正する
+- さらに内容を深めるための提案をする（例：感想や理由を詳しくする、行動や気持ちを書き足す）
+
 出力は必ずJSON形式にしてください。
 
 {{
@@ -40,6 +46,10 @@ async def correct_essay(
   "提案": [
     "より自然な表現は xxx です。",
     "xxx を使うとわかりやすいです。"
+  ],
+  "深掘り提案": [
+    "この行動で自分がどんなことをしたいか付け加えてみましょう。",
+    "主人公の気持ちに自分を重ねて考えてみましょう。"
   ]
 }}
 
@@ -52,9 +62,9 @@ async def correct_essay(
     ]
 
     payload = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4.1-mini",  # gpt-4.1-mini より賢いモデルに変更推奨
         "messages": messages,
-        "temperature": 0.5,
+        "temperature": 0.6,  # 少し自由度を上げると提案が柔軟になる
         "max_tokens": 1000,
     }
 
@@ -69,13 +79,25 @@ async def correct_essay(
                 json=payload,
             )
         response.raise_for_status()
+
+        if "application/json" not in response.headers.get("content-type", ""):
+            raise RuntimeError(f"OpenAI APIからJSON以外のレスポンス: {response.text}")
+
         data = response.json()
+        print("=== OpenAI API Response ===", data)
 
-        corrected_text = data["choices"][0]["message"]["content"]
-        # dict かもしれないので文字列化して返す
-        corrected_text_str = str(corrected_text)
+        if "choices" not in data or not data["choices"]:
+            raise RuntimeError(f"choicesが空: {data}")
 
-        return {"corrected_content": corrected_text_str, "raw_response": data}
+        message = data["choices"][0].get("message")
+        if not message or "content" not in message:
+            raise RuntimeError(f"message.contentが存在しません: {data}")
 
+        corrected_text = message["content"]
+
+        return {"corrected_content": corrected_text, "raw_response": data}
+
+    except httpx.HTTPStatusError as e:
+        raise RuntimeError(f"OpenAI APIがHTTPエラーを返しました: {e.response.text}")
     except Exception as e:
         raise RuntimeError(f"OpenAI API呼び出しエラー: {str(e)}")

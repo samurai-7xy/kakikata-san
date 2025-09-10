@@ -62,12 +62,19 @@ const GenkoYoshiEditor: React.FC = () => {
   const handleScoring = async () => {
     setIsLoading(true);
     try {
+      // ログイン情報などから grade/age を取得
+      // 今回はテスト用に仮で grade=3, age=9 にしています
+      const userGrade = 3; // 実際はログインユーザ情報から取得
+      const userAge = 9;   // 実際はログインユーザ情報から取得
+
       const res = await fetch("http://localhost:8000/api/correction/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           content: text,
-          grade: 3,
+          grade: userGrade,
+          age: userAge,
+          options: {}, // 空オブジェクトを必ず送る
         }),
       });
 
@@ -82,8 +89,7 @@ const GenkoYoshiEditor: React.FC = () => {
       console.log("採点結果:", result);
 
       sessionStorage.setItem("correctionResult", JSON.stringify(result));
-      sessionStorage.setItem('originalText', text); 
-      router.push(`/result`);
+      sessionStorage.setItem('originalText', text);
       router.push(`/result?data=${encodeURIComponent(JSON.stringify(result))}`);
     } catch (err) {
       console.error("採点処理エラー:", err);

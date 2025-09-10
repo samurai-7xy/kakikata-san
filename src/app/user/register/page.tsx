@@ -92,13 +92,26 @@ export default function RegisterPage() {
                 />
 
                 <label className="block mb-1">学年</label>
-                <input
-                    type="text"
+                <select
                     value={grade}
                     onChange={(e) => setGrade(e.target.value)}
                     className="border p-2 w-full rounded mb-4"
                     required
-                />
+                >
+                    <option value="">選択してください</option>
+                    <option value="小1">小1</option>
+                    <option value="小2">小2</option>
+                    <option value="小3">小3</option>
+                    <option value="小4">小4</option>
+                    <option value="小5">小5</option>
+                    <option value="小6">小6</option>
+                    <option value="中1">中1</option>
+                    <option value="中2">中2</option>
+                    <option value="中3">中3</option>
+                    <option value="高校生">高校生</option>
+                    <option value="大学生">大学生</option>
+                    <option value="その他">その他</option>
+                </select>
 
                 <button
                     type="submit"

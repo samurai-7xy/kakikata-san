@@ -1,6 +1,7 @@
 # app/schemas/correction.py
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from typing import Optional, Dict, Any
 
 
 class EssayRequest(BaseModel):
@@ -10,6 +11,7 @@ class EssayRequest(BaseModel):
 
     content: str = Field(..., title="作文本文", max_length=2000)
     grade: Optional[int] = Field(None, title="学年（任意）")
+    age: Optional[int] = None  # ← 追加
     options: Optional[dict] = Field(
         default=None,
         title="オプション設定",

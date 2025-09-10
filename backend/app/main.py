@@ -9,7 +9,10 @@ app = FastAPI(title="かきかたさん", version="0.1.0")
 # CORS設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js
+    allow_origins=[
+        "http://localhost:3000",
+        "https://my-nextjs-app.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

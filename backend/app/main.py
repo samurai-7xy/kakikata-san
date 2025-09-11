@@ -12,6 +12,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://my-nextjs-app.vercel.app",
+        "https://my-nextjs-app.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],

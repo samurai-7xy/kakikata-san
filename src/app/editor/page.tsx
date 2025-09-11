@@ -169,7 +169,7 @@ const GenkoYoshiEditor: React.FC = () => {
           <button
             onClick={handleScoring}
             disabled={isLoading}
-            className="fixed bottom-8 right-8 bg-green-500 text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed z-30"
+            className="fixed bottom-8 right-8 bg-[#4A90E2] text-white font-semibold text-xl py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed z-30"
           >
             <RubyText
               segments={[

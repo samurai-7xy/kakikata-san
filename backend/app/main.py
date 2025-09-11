@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes_users import router as users_router
-from app.api import routes_ocr
-from app.api import routes_correction
+from .api.routes_users import router as users_router
+from .api import routes_ocr
+from .api import routes_correction
 
 app = FastAPI(title="かきかたさん", version="0.1.0")
 

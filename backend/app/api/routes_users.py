@@ -6,8 +6,15 @@ from ..services.user_service import create_user, authenticate_user
 from ..db.session import async_session
 from ..core.security import create_access_token
 from ..schema.user import UserCreate, UserProfile, UserLogin, UserLoginResponse
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
+
+
+@router.options("/register/")
+async def register_options():
+    # OPTIONSリクエストは、CORSヘッダーを返すだけで良い
+    return JSONResponse(status_code=200)
 
 
 @router.post("/register/", response_model=UserProfile)

@@ -14,6 +14,8 @@ app.add_middleware(
         "https://kakikata-san-1.onrender.com",  # 本番フロント用
         "https://kakikata-san.onrender.com",
     ],
+    # デバッグ用
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

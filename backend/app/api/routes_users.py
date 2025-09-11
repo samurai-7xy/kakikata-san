@@ -11,13 +11,7 @@ from fastapi.responses import JSONResponse
 router = APIRouter()
 
 
-@router.options("/register/")
-async def register_options():
-    # OPTIONSリクエストは、CORSヘッダーを返すだけで良い
-    return JSONResponse(status_code=200)
-
-
-@router.post("/register/", response_model=UserProfile)
+@router.post("/register", response_model=UserProfile)
 async def register_user(user_in: UserCreate):
     async with async_session() as session:
         user = await create_user(session, user_in)

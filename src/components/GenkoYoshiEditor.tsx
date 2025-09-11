@@ -59,7 +59,7 @@ const GenkoYoshiEditor: React.FC = () => {
             const userGrade = "3";
             const userAge = 9;
 
-            const res = await fetch(`${BASE_URL}/api/correction`, {
+            const res = await fetch(`${BASE_URL}/api/correction/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ content: text, grade: userGrade, age: userAge, options: {} }),

@@ -9,11 +9,11 @@ app = FastAPI(title="かきかたさん", version="0.1.0")
 # CORS設定
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # ローカル開発用
-        "https://kakikata-san-1.onrender.com",  # 本番フロント用
-        "https://kakikata-san.onrender.com",
-    ],
+    # allow_origins=[
+    #     "http://localhost:3000",  # ローカル開発用
+    #     "https://kakikata-san-1.onrender.com",  # 本番フロント用
+    #     "https://kakikata-san.onrender.com",
+    # ],
     # デバッグ用
     allow_origins=["*"],
     allow_credentials=True,

@@ -23,7 +23,7 @@ app.add_middleware(
 # app.include_router(users_router)
 
 # # 手書き認識のやつのルータ
-# app.include_router(routes_ocr.router)
+app.include_router(routes_ocr.router)
 
 # # API登録
 # app.include_router(routes_correction.router, prefix="/api")
@@ -35,7 +35,7 @@ app.add_middleware(
 app.include_router(users_router, prefix="/api/users")
 
 # OCR
-app.include_router(routes_ocr.router, prefix="/ocr")
+# app.include_router(routes_ocr.router, prefix="/ocr")
 
 # 採点 API
 app.include_router(routes_correction.router, prefix="/api/correction")

@@ -1,15 +1,12 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "sqlite+aiosqlite:///./db.sqlite"  # Render 環境なら絶対パスに変更も可
-
+DATABASE_URL = "sqlite+aiosqlite:///./db.sqlite"  # Renderなら絶対パスも検討
 engine = create_async_engine(DATABASE_URL, echo=True)
-
-# 非同期セッション
-async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
-# FastAPI依存関数
+# DBセッション依存
 async def get_db():
-    async with async_session() as session:
+    async with AsyncSessionLocal() as session:
         yield session

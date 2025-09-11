@@ -1,12 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import declarative_base
-from .api.routes_users import router as users_router
-from .api import routes_ocr, routes_correction
-from .db.session import engine
-from sqlalchemy.ext.asyncio import AsyncSession
 
-Base = declarative_base()
+from app.db.session import engine
+from app.models.user import Base, User
+from app.api.routes_users import router as users_router
+from app.api import routes_ocr, routes_correction
 
 app = FastAPI(title="かきかたさん", version="0.1.0")
 

@@ -80,7 +80,7 @@ export default function ReviewPage() {
         formData.append("file", blob, `image_${i}.png`);
       }
 
-      const res = await fetch(`${BASE_URL}/ocr`, {
+      const res = await fetch(`${BASE_URL}/api/ocr`, {
         method: "POST",
         body: formData,
       });

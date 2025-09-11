@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models.user import User
 from ..services.user_service import create_user, authenticate_user
-from ..db.session import get_db
+from ..db.session import get_db  # これを使って依存注入
 from ..core.security import create_access_token
 from ..schema.user import UserCreate, UserProfile, UserLogin, UserLoginResponse
 
@@ -25,6 +25,7 @@ async def login_user(user_in: UserLogin, db: AsyncSession = Depends(get_db)):
             status_code=401,
             detail="メールアドレスまたはパスワードが正しくありません",
         )
+
     token = create_access_token({"sub": str(user.id)})
     return UserLoginResponse(
         access_token=token,

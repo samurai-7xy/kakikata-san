@@ -10,9 +10,8 @@ app = FastAPI(title="かきかたさん", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "https://my-nextjs-app.vercel.app",
-        "https://my-nextjs-app.onrender.com",
+        "http://localhost:3000",  # ローカル開発用
+        "https://kakikata-san-1.onrender.com",  # 本番フロント用
     ],
     allow_credentials=True,
     allow_methods=["*"],

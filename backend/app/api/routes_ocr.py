@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
 from app.services.ocr_service import OCRService
 
-router = APIRouter(prefix="/ocr", tags=["ocr"])
+router = APIRouter(tags=["ocr"])  # prefix 削除
 
 
 @router.post("/")

@@ -1,19 +1,22 @@
-# app/api/routes_correction.py
-from fastapi import APIRouter, HTTPException
-from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Depends
+from typing import Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schema.correction import EssayRequest, EssayResponse
 from app.core.openai_client import correct_essay
-from app.db.session import async_session
+from app.db.session import get_db
 from app.models.essay import Essay
 from app.utils.validators import contains_forbidden_words
-from app.utils.tone_selector import choose_tone  # ← 追加
+from app.utils.tone_selector import choose_tone
 
 router = APIRouter()
 
 
 @router.post("/correction/", response_model=EssayResponse)
 async def correction_endpoint(
-    request: EssayRequest, current_user: Optional[str] = None  # ログインなしでもOK
+    request: EssayRequest,
+    current_user: Optional[str] = None,  # ログインなしでもOK
+    db: AsyncSession = Depends(get_db),  # ← ここで DB セッションを依存注入
 ):
     """
     作文添削API
@@ -27,40 +30,29 @@ async def correction_endpoint(
         )
 
     try:
-        # --- ここで口調を決定 ---
-        # request.grade や request.age が送られてくる想定
-        tone = choose_tone(
-            # grade=request.grade if hasattr(request, "grade") else None,
-            age=request.age if hasattr(request, "age") else None,
-        )
-
-        # optionsを組み立てる（既存optionsがあればマージ）
+        # --- 口調を決定 ---
         options = request.options if isinstance(request.options, dict) else {}
-        options["tone"] = choose_tone(
-            # grade=getattr(request, "grade", None),
-            age=getattr(request, "age", None)
-        )
+        options["tone"] = choose_tone(age=getattr(request, "age", None))
 
         # 添削処理
         result = await correct_essay(
             essay_text=request.content,
-            # grade=request.grade,
             options=options,
         )
 
         corrected_content = result.get("corrected_content", "")
-        comments = result.get("comments", [])  # 将来コメント返す場合に対応
+        comments = result.get("comments", [])
 
         # DB保存（ユーザが存在する場合のみ）
         if current_user:
-            async with async_session() as session:
-                essay = Essay(
-                    user_id=current_user,
-                    content=request.content,
-                    corrected_content=corrected_content,
-                )
-                session.add(essay)
-                await session.commit()
+            essay = Essay(
+                user_id=current_user,
+                content=request.content,
+                corrected_content=corrected_content,
+            )
+            db.add(essay)
+            await db.commit()
+            await db.refresh(essay)
 
         return EssayResponse(corrected_content=corrected_content, comments=comments)
 

@@ -29,14 +29,24 @@ async def create_user(session: AsyncSession, user_in: UserCreate) -> User:
     return user
 
 
-async def authenticate_user(
-    session: AsyncSession, email: str, password: str
-) -> User | None:
-    """
-    メールアドレスとパスワードでユーザーを認証する
-    認証成功時はUserオブジェクトを返し、失敗時はNone
-    """
-    result = await session.execute(select(User).where(User.email == email))
+# async def authenticate_user(
+#     session: AsyncSession, email: str, password: str
+# ) -> User | None:
+#     """
+#     メールアドレスとパスワードでユーザーを認証する
+#     認証成功時はUserオブジェクトを返し、失敗時はNone
+#     """
+#     result = await session.execute(select(User).where(User.email == email))
+#     user = result.scalars().first()
+#     if not user:
+#         return None
+#     if not verify_password(password, user.hashed_password):
+#         return None
+#     return user
+
+
+async def authenticate_user(db: AsyncSession, email: str, password: str) -> User | None:
+    result = await db.execute(select(User).where(User.email == email))
     user = result.scalars().first()
     if not user:
         return None

@@ -1,8 +1,8 @@
 # create_db.py
 import asyncio
-from db.session import engine  # async engine
 from models.user import Base as UserBase
 from models.essay import Base as EssayBase
+from .db.session import engine
 
 
 async def create_tables():

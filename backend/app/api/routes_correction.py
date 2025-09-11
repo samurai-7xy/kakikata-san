@@ -12,7 +12,7 @@ from app.utils.tone_selector import choose_tone
 router = APIRouter()
 
 
-@router.post("/correction/", response_model=EssayResponse)
+@router.post("/", response_model=EssayResponse)
 async def correction_endpoint(
     request: EssayRequest,
     current_user: Optional[str] = None,  # ログインなしでもOK

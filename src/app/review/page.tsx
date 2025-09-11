@@ -20,6 +20,8 @@ export default function ReviewPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageIndexToDelete, setImageIndexToDelete] = useState<number | null>(null);
 
+  const BASE_URL = "https://kakikata-san.onrender.com";
+
   // 「選び直す」ボタンの処理
   const handleRetake = () => {
     setImages([]);
@@ -78,7 +80,7 @@ export default function ReviewPage() {
         formData.append("file", blob, `image_${i}.png`);
       }
 
-      const res = await fetch("http://localhost:8000/ocr", {
+      const res = await fetch(`${BASE_URL}/ocr/`, {
         method: "POST",
         body: formData,
       });

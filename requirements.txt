@@ -56,7 +56,9 @@ SQLAlchemy==2.0.43
 starlette==0.47.3
 sympy==1.14.0
 tifffile==2025.8.28
-torch==2.8.0
+torch==2.8.0+cpu
+torchvision==0.23.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 torchvision==0.23.0
 tqdm==4.67.1
 typing-inspection==0.4.1

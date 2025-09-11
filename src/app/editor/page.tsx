@@ -20,6 +20,8 @@ const GenkoYoshiEditor: React.FC = () => {
   const [scale, setScale] = useState(1.0);
   const genkoWidth = 960; // 原稿用紙の基本幅 (px)
 
+  const BASE_URL = "https://kakikata-san.onrender.com";
+
   // ✅ クエリパラメータから初期値を反映
   useEffect(() => {
     const paramText = searchParams.get("text");
@@ -67,7 +69,7 @@ const GenkoYoshiEditor: React.FC = () => {
       const userGrade = 3; // 実際はログインユーザ情報から取得
       const userAge = 9;   // 実際はログインユーザ情報から取得
 
-      const res = await fetch("http://localhost:8000/api/correction/", {
+      const res = await fetch(`${BASE_URL}/api/correction/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

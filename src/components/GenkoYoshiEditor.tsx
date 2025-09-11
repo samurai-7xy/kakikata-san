@@ -56,7 +56,7 @@ const GenkoYoshiEditor: React.FC = () => {
     const handleScoring = async () => {
         setIsLoading(true);
         try {
-            const userGrade = 3;
+            const userGrade = "3";
             const userAge = 9;
 
             const res = await fetch(`${BASE_URL}/api/correction/`, {

@@ -4,7 +4,7 @@ from app.services.correction_service import correct_essay
 
 async def main():
     essay_text = "今日はりんごを食べました．美味しかったです．"
-    grade = 3
+    grade = "3"
     options = {"tone": "普通の口調"}
 
     try:

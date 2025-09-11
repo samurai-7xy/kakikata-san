@@ -21,8 +21,8 @@ async def correct_essay(
 
     # 学年や口調を考慮
     system_prompt = "あなたは小学生向けの作文添削アシスタントです。"
-    if grade:
-        system_prompt += f" 学年は {grade} 年生です。"
+    # if grade:
+    # system_prompt += f" 学年は {grade} 年生です。"
 
     if options:
         tone = options.get("tone")

@@ -30,20 +30,21 @@ async def correction_endpoint(
         # --- ここで口調を決定 ---
         # request.grade や request.age が送られてくる想定
         tone = choose_tone(
-            grade=request.grade if hasattr(request, "grade") else None,
+            # grade=request.grade if hasattr(request, "grade") else None,
             age=request.age if hasattr(request, "age") else None,
         )
 
         # optionsを組み立てる（既存optionsがあればマージ）
         options = request.options if isinstance(request.options, dict) else {}
         options["tone"] = choose_tone(
-            grade=getattr(request, "grade", None), age=getattr(request, "age", None)
+            # grade=getattr(request, "grade", None),
+            age=getattr(request, "age", None)
         )
 
         # 添削処理
         result = await correct_essay(
             essay_text=request.content,
-            grade=request.grade,
+            # grade=request.grade,
             options=options,
         )
 

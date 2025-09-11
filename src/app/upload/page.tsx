@@ -71,7 +71,7 @@ export default function UploadPage() {
         {images.length > 0 && (
           <Link
             href="/review"
-            className="w-full bg-green-500 text-white font-semibold text-2xl py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors duration-300 flex items-center justify-center text-center"
+            className="w-full bg-[#4A90E2] text-white font-semibold text-2xl py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"
           >
             <RubyText segments={[{ text: '次', ruby: 'つぎ' },{ text: 'へ', ruby: 'へ' },{ text: '進む', ruby: 'すすむ' }]} />
           </Link>

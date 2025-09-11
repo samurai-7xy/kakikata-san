@@ -119,14 +119,42 @@ export default function ResultPage() {
 
 
         if (format === 'pdf') {
-            const imgData = canvas.toDataURL('image/png');
+            /*const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`${fileName}.pdf`);*/
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+
+            // PDFの幅に合わせて画像の高さを計算
+            const imgHeight = (canvasHeight * pageWidth) / canvasWidth;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // 最初のページを追加
+            pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            // 画像の高さが残っていれば、新しいページを追加して画像を分割描画
+            while (heightLeft > 0) {
+              position = heightLeft - imgHeight;
+              pdf.addPage();
+              pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
+              heightLeft -= pageHeight;
+            }
+            
             pdf.save(`${fileName}.pdf`);
+
         } else {
             const image = canvas.toDataURL(`image/${format}`, 1.0);
             const a = document.createElement('a');
@@ -206,14 +234,14 @@ export default function ResultPage() {
                     <CardFooter className="p-6 flex justify-center gap-4">
                         <Button
                             onClick={handleRewrite}
-                            className="!bg-[#F5A623] !hover:bg-[#D99A1C] flex items-center gap-2"
+                            className="!bg-[#F5A623] !hover:bg-[#D99A1C] flex items-center gap-2 font-semibold"
                         >
                             <Edit size={18} />
                             <RubyText segments={[{ text: '書き直す', ruby: 'かきなおす' }]} />
                         </Button>
                         <Button
                             onClick={() => router.push('/')}
-                            className="bg-[#4A90E2] hover:bg-blue-600" >
+                            className="bg-[#4A90E2] hover:bg-blue-600 font-semibold" >
                             <RubyText segments={[{ text: 'ホ', ruby: 'ほ' }, { text: 'ー', ruby: 'ー' }, { text: 'ム', ruby: 'む' }, { text: 'に' }, { text: '戻', ruby: 'もど' }, { text: 'る' }]} />
                         </Button>
                     </CardFooter>
@@ -234,12 +262,12 @@ export default function ResultPage() {
                     <div className="bg-white rounded-lg shadow-2xl p-8 max-w-sm w-full">
                         <h2 className="text-2xl font-bold text-center mb-6"><RubyText segments={[{ text: '保存形式', ruby: 'ほぞんけいしき' }, { text: 'を' }, { text: '選択', ruby: 'せんたく' }]} /></h2>
                         <div className="grid grid-cols-2 gap-4">
-                            <Button onClick={() => handleSave('pdf')} className="flex items-center justify-center gap-2 py-6 text-lg"><FileType /> PDF</Button>
-                            <Button onClick={() => handleSave('png')} className="flex items-center justify-center gap-2 py-6 text-lg"><ImageIcon /> PNG</Button>
-                            <Button onClick={() => handleSave('jpeg')} className="flex items-center justify-center gap-2 py-6 text-lg"><ImageIcon /> JPEG</Button>
-                            <Button onClick={() => handleSave('text')} className="flex items-center justify-center gap-2 py-6 text-lg"><FileText /><RubyText segments={[{ text: 'テキスト', ruby: 'てきすと' }]} /></Button>
+                            <Button onClick={() => handleSave('pdf')} className="flex items-center justify-center gap-2 py-6 text-lg font-semibold"><FileType /> PDF</Button>
+                            <Button onClick={() => handleSave('png')} className="flex items-center justify-center gap-2 py-6 text-lg font-semibold"><ImageIcon /> PNG</Button>
+                            <Button onClick={() => handleSave('jpeg')} className="flex items-center justify-center gap-2 py-6 text-lg font-semibold"><ImageIcon /> JPEG</Button>
+                            <Button onClick={() => handleSave('text')} className="flex items-center justify-center gap-2 py-6 text-lg font-semibold"><FileText /><RubyText segments={[{ text: 'テキスト', ruby: 'てきすと' }]} /></Button>
                         </div>
-                        <Button onClick={() => setShowSaveModal(false)} className="w-full mt-6 bg-gray-500 hover:bg-gray-600">
+                        <Button onClick={() => setShowSaveModal(false)} className="w-full mt-6 bg-gray-500 hover:bg-gray-600 font-semibold">
                             <RubyText segments={[{ text: 'キャンセル', ruby: 'きゃんせる' }]} />
                         </Button>
                     </div>

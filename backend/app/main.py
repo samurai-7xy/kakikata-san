@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import Column, Integer, String, select
 from passlib.context import CryptContext
 import asyncio
+from app.api import users
 
 # ------------------------
 # データベース設定
@@ -110,3 +111,6 @@ async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db))
     await db.commit()
     await db.refresh(user)
     return {"id": user.id, "username": user.username, "email": user.email}
+
+
+app.include_router(users.router, prefix="/api/users")

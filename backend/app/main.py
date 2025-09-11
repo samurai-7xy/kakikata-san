@@ -18,15 +18,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ルーター登録
-# ユーザ登録
-app.include_router(users_router)
+# # ルーター登録
+# # ユーザ登録
+# app.include_router(users_router)
 
-# 手書き認識のやつのルータ
-app.include_router(routes_ocr.router)
+# # 手書き認識のやつのルータ
+# app.include_router(routes_ocr.router)
 
-# API登録
-app.include_router(routes_correction.router, prefix="/api")
+# # API登録
+# app.include_router(routes_correction.router, prefix="/api")
 
-# ログイン
+# # ログイン
+# app.include_router(users_router, prefix="/api/users")
+
+# ユーザ関連
 app.include_router(users_router, prefix="/api/users")
+
+# OCR
+app.include_router(routes_ocr.router, prefix="/ocr")
+
+# 採点 API
+app.include_router(routes_correction.router, prefix="/api/correction")

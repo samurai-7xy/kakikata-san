@@ -12,6 +12,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",  # ローカル開発用
         "https://kakikata-san-1.onrender.com",  # 本番フロント用
+        "https://kakikata-san.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],

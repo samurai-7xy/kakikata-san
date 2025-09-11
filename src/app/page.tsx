@@ -80,7 +80,7 @@ export default function HomePage() {
             </div>
           </Link>
           <Link
-            href="/user/register"
+            href="/user/register/"
             className="w-full h-48 sm:h-60 md:h-72 bg-[#4A90E2] text-white font-semibold text-4xl md:text-5xl lg:text-[64px] py-4 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center text-center"
           >
             <div>

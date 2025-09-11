@@ -1,44 +1,37 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models.user import User
-from ..services.user_service import authenticate_user
+from ..services.user_service import create_user, authenticate_user
+from ..db.session import get_db
 from ..core.security import create_access_token
-from ..schema.user import UserLogin, UserLoginResponse
-from ..db.session import AsyncSessionLocal, get_db  # get_db を利用
+from ..schema.user import UserCreate, UserProfile, UserLogin, UserLoginResponse
 
 router = APIRouter()
 
 
+@router.post("/register", response_model=UserProfile)
+async def register_user(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
+    user = await create_user(db, user_in)
+    if not user:
+        raise HTTPException(status_code=400, detail="ユーザー作成に失敗しました")
+    return UserProfile.from_orm(user)
+
+
 @router.post("/login", response_model=UserLoginResponse)
 async def login_user(user_in: UserLogin, db: AsyncSession = Depends(get_db)):
-    try:
-        # ユーザー認証
-        user = await authenticate_user(
-            db, email=user_in.email, password=user_in.password
+    user = await authenticate_user(db, email=user_in.email, password=user_in.password)
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="メールアドレスまたはパスワードが正しくありません",
         )
-
-        if not user:
-            raise HTTPException(
-                status_code=401,
-                detail="メールアドレスまたはパスワードが正しくありません",
-            )
-
-        token = create_access_token({"sub": str(user.id)})
-
-        return UserLoginResponse(
-            access_token=token,
-            token_type="bearer",
-            id=user.id,
-            username=user.username,
-            email=user.email,
-            grade=user.grade,
-            age=user.age,
-        )
-
-    except HTTPException:
-        # 認証失敗はそのまま返す
-        raise
-    except Exception as e:
-        # 内部エラーはログに出力
-        print("LOGIN ERROR:", e)
-        raise HTTPException(status_code=500, detail="内部サーバーエラー")
+    token = create_access_token({"sub": str(user.id)})
+    return UserLoginResponse(
+        access_token=token,
+        token_type="bearer",
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        grade=user.grade,
+        age=user.age,
+    )

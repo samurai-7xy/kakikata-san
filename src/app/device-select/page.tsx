@@ -33,11 +33,11 @@ import RubyText from '@/components/RubyText';
 
 export default function DeviceSelectPage() {
   const deviceLinks = {
-    'iPhone': 'https://www.youtube.com/watch?v=your_iphone_video_id',
-    'Android': 'https://www.youtube.com/watch?v=your_android_video_id',
-    'Mac': 'https://www.youtube.com/watch?v=your_mac_video_id',
-    'Windows': 'https://www.youtube.com/watch?v=your_windows_video_id',
-    'iPad': 'https://www.youtube.com/watch?v=your_ipad_video_id',
+    'iPhone': 'https://youtu.be/BLA8iZ2MqVE',
+    'Android': 'https://youtube.com/shorts/FfSpm94h2xk',
+    'Mac': 'https://youtu.be/UGpE8zUM3XM',
+    'Windows': 'https://youtu.be/_9r3UT9fvTE',
+    'iPad': 'https://youtu.be/0g9dPUC_lE8',
   };
 
   // handleDeviceClick の引数に string 型を指定します

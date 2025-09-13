@@ -25,3 +25,8 @@ OSやデバイスによって操作方法が異なることに配慮し、ファ
 
 
 ## 動作方法
+以下のURLからサイトへ入ってください。  
+https://kakikata-san-1.onrender.com/  
+使い方説明ボタンを押して動画を見ることで，本サイトの使い方がわかります。  
+使い方説明ボタン押下後のリンクは以下です。  
+https://kakikata-san-1.onrender.com/device-select

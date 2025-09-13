@@ -1,3 +1,4 @@
+'use client';
 import CloseButton from '@/components/CloseButton';
 import DeviceButton from '@/components/DeviceButton'; // ✨ 作成したボタンコンポーネントをインポート
 import RubyText from '@/components/RubyText';
@@ -9,9 +10,9 @@ export default function DeviceSelectPage() {
     <div className="relative flex items-center justify-center min-h-screen bg-gray-800 bg-opacity-75">
       <div className="relative w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <CloseButton />
-        
+
         <h1 className="text-center text-3xl font-bold text-gray-800 mb-8">
-          <RubyText segments={[{ text: 'ご使用', ruby: 'ごしよう' }, { text: 'の'}, { text: '端末', ruby: 'たんまつ' }]} />
+          <RubyText segments={[{ text: 'ご使用', ruby: 'ごしよう' }, { text: 'の' }, { text: '端末', ruby: 'たんまつ' }]} />
         </h1>
 
         <div className="grid grid-cols-2 gap-4">
